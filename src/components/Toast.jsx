@@ -18,9 +18,12 @@ export const ToastContainer = () => {
       setToasts(prev => [...prev, toast]);
       
       // Supprimer automatiquement après 3 secondes
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         setToasts(prev => prev.filter(t => t.id !== toast.id));
       }, 3000);
+      
+      // Stocker le timeoutId dans l'objet toast pour pouvoir l'annuler
+      toast.timeoutId = timeoutId;
     };
 
     listeners.push(listener);
@@ -33,11 +36,25 @@ export const ToastContainer = () => {
     };
   }, []);
 
+  const removeToast = (toastId, timeoutId) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    setToasts(prev => prev.filter(t => t.id !== toastId));
+  };
+
   return (
     <div className="toast-container">
       {toasts.map(toast => (
         <div key={toast.id} className={`toast toast-${toast.type}`}>
           <span className="toast-message">{toast.message}</span>
+          <button
+            className="toast-close"
+            onClick={() => removeToast(toast.id, toast.timeoutId)}
+            aria-label="Fermer"
+          >
+            ×
+          </button>
         </div>
       ))}
     </div>
