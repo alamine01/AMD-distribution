@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { productsStorage, categoriesStorage, ordersStorage } from '../utils/localStorage';
+import { productsStorage, categoriesStorage } from '../utils/localStorage';
 import Footer from '../components/Footer';
 import ProductCarousel from '../components/ProductCarousel';
-import OrderModal from '../components/OrderModal';
 import Cart from '../components/Cart';
+import { CONTACT_CONFIG } from '../config/contact';
 import './Home.css';
 
 // Mode développement : utiliser localStorage au lieu de Firebase
@@ -14,8 +14,6 @@ function Home() {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [showOrderModal, setShowOrderModal] = useState(false);
 
   // Catégories de prévisualisation
   const previewCategories = [
@@ -171,47 +169,27 @@ function Home() {
         return acc;
       }, {});
 
-  const handleOrderClick = (product) => {
-    setSelectedProduct(product);
-    setShowOrderModal(true);
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: 'XOF'
+    }).format(price);
   };
 
-  const handleOrderSubmit = async (orderData) => {
-    if (USE_LOCAL_STORAGE) {
-      try {
-        ordersStorage.save({
-          ...orderData,
-          productId: selectedProduct.id,
-          productName: selectedProduct.name,
-          productPrice: selectedProduct.price,
-          status: 'pending'
-        });
-        alert('Commande envoyée avec succès!');
-        setShowOrderModal(false);
-        setSelectedProduct(null);
-      } catch (error) {
-        console.error('Erreur lors de l\'envoi de la commande:', error);
-        alert('Erreur lors de l\'envoi de la commande. Veuillez réessayer.');
-      }
-    } else {
-      // Mode Firebase
-      // try {
-      //   await addDoc(collection(db, 'orders'), {
-      //     ...orderData,
-      //     productId: selectedProduct.id,
-      //     productName: selectedProduct.name,
-      //     productPrice: selectedProduct.price,
-      //     createdAt: new Date(),
-      //     status: 'pending'
-      //   });
-      //   alert('Commande envoyée avec succès!');
-      //   setShowOrderModal(false);
-      //   setSelectedProduct(null);
-      // } catch (error) {
-      //   console.error('Erreur lors de l\'envoi de la commande:', error);
-      //   alert('Erreur lors de l\'envoi de la commande. Veuillez réessayer.');
-      // }
-    }
+  const handleOrderClick = (product) => {
+    // Créer le message WhatsApp pour un produit unique
+    const message = `Bonjour, je souhaite commander :\n\n`;
+    const productMessage = `• ${product.name}\n`;
+    const quantityMessage = `  Quantité: x1\n`;
+    const priceMessage = `  Prix: ${formatPrice(product.price || 0)}\n\n`;
+    const totalMessage = `*Total : ${formatPrice(product.price || 0)}*`;
+    
+    const fullMessage = message + productMessage + quantityMessage + priceMessage + totalMessage;
+    const encodedMessage = encodeURIComponent(fullMessage);
+    const whatsappUrl = `https://wa.me/${CONTACT_CONFIG.whatsappNumber}?text=${encodedMessage}`;
+    
+    // Ouvrir WhatsApp dans un nouvel onglet
+    window.open(whatsappUrl, '_blank');
   };
 
 
@@ -297,7 +275,11 @@ function Home() {
         <section className="two-column-section">
           <div className="column-left">
             <div className="content-item">
-              <div className="content-icon">⭐</div>
+              <div className="content-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#dc2626" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
               <div className="content-text">
                 <h3 className="content-item-title">Qualité Premium</h3>
                 <p className="content-item-description">Nous sélectionnons uniquement les meilleurs produits pour vous garantir satisfaction et durabilité.</p>
@@ -305,7 +287,14 @@ function Home() {
               </div>
             </div>
             <div className="content-item">
-              <div className="content-icon">🤝</div>
+              <div className="content-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M22 21V19C21.9993 17.9352 21.6277 16.8693 20.9265 16.0001C20.2253 15.1309 19.2418 14.5107 18.13 14.25" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55219C18.7122 5.25367 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75634 18.1676 9.45782C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
               <div className="content-text">
                 <h3 className="content-item-title">Service Client Exceptionnel</h3>
                 <p className="content-item-description">Notre équipe est à votre écoute pour répondre à toutes vos questions et besoins.</p>
@@ -316,9 +305,6 @@ function Home() {
           <div className="column-right">
             <div className="content-image large">
               <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop" alt="Boutique moderne" />
-            </div>
-            <div className="content-image large">
-              <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&h=400&fit=crop" alt="Service client" />
             </div>
           </div>
         </section>
@@ -340,8 +326,8 @@ function Home() {
               <div className="numbered-item">
                 <span className="number">02.</span>
                 <div className="numbered-text">
-                  <h3 className="numbered-item-title">Commandez en ligne</h3>
-                  <p className="numbered-item-description">Ajoutez vos produits au panier et finalisez votre commande en quelques clics.</p>
+                  <h3 className="numbered-item-title">Commandez sur WhatsApp</h3>
+                  <p className="numbered-item-description">Ajoutez vos produits au panier et commandez directement via WhatsApp en un clic.</p>
                 </div>
               </div>
               <div className="numbered-item">
@@ -358,17 +344,6 @@ function Home() {
           </div>
         </section>
       </main>
-
-      {showOrderModal && selectedProduct && (
-        <OrderModal
-          product={selectedProduct}
-          onClose={() => {
-            setShowOrderModal(false);
-            setSelectedProduct(null);
-          }}
-          onSubmit={handleOrderSubmit}
-        />
-      )}
 
       <Footer />
     </div>

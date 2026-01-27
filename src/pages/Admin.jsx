@@ -340,12 +340,6 @@ function Admin() {
         >
           Catégories
         </button>
-        <button
-          className={activeTab === 'orders' ? 'active' : ''}
-          onClick={() => setActiveTab('orders')}
-        >
-          Commandes ({orders.length})
-        </button>
       </div>
 
       <main className="admin-main">
@@ -436,24 +430,6 @@ function Admin() {
           </div>
         )}
 
-        {activeTab === 'orders' && (
-          <div className="orders-admin">
-            <h2>Commandes</h2>
-            {orders.length === 0 ? (
-              <p className="empty-state">Aucune commande pour le moment.</p>
-            ) : (
-              <div className="orders-list">
-                {orders.map(order => (
-                  <OrderCard
-                    key={order.id}
-                    order={order}
-                    onStatusUpdate={updateOrderStatus}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        )}
       </main>
     </div>
   );
@@ -470,6 +446,31 @@ function ProductForm({ product, categories, onClose, onSubmit }) {
   });
   const [imagePreview, setImagePreview] = useState(product?.imageUrl || '');
   const [uploading, setUploading] = useState(false);
+
+  // Mettre à jour l'état quand le produit change
+  useEffect(() => {
+    if (product) {
+      setFormData({
+        name: product.name || '',
+        description: product.description || '',
+        price: product.price || '',
+        stock: product.stock || 0,
+        imageUrl: product.imageUrl || '',
+        categoryId: product.categoryId || ''
+      });
+      setImagePreview(product.imageUrl || '');
+    } else {
+      setFormData({
+        name: '',
+        description: '',
+        price: '',
+        stock: 0,
+        imageUrl: '',
+        categoryId: ''
+      });
+      setImagePreview('');
+    }
+  }, [product]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -513,12 +514,6 @@ function ProductForm({ product, categories, onClose, onSubmit }) {
       alert('Erreur lors du téléversement de l\'image');
       setUploading(false);
     }
-  };
-
-  const handleImageUrlChange = (e) => {
-    const url = e.target.value;
-    setFormData(prev => ({ ...prev, imageUrl: url }));
-    setImagePreview(url);
   };
 
   const handleSubmit = (e) => {
@@ -625,17 +620,6 @@ function ProductForm({ product, categories, onClose, onSubmit }) {
                   </button>
                 </div>
               )}
-            </div>
-            <div className="image-url-fallback" style={{ marginTop: '10px' }}>
-              <p className="form-hint" style={{ marginBottom: '5px' }}>Ou entrez une URL d'image :</p>
-              <input
-                type="url"
-                name="imageUrl"
-                value={formData.imageUrl && !formData.imageUrl.startsWith('data:') ? formData.imageUrl : ''}
-                onChange={handleImageUrlChange}
-                placeholder="https://images.unsplash.com/..."
-                className="url-input"
-              />
             </div>
           </div>
           <div className="form-actions">
