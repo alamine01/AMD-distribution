@@ -1,4 +1,5 @@
 import { useCart } from '../context/CartContext';
+import { showToast } from './Toast';
 import './ProductCard.css';
 
 function ProductCard({ product, onOrderClick }) {
@@ -14,6 +15,7 @@ function ProductCard({ product, onOrderClick }) {
   const handleAddToCart = (e) => {
     e.stopPropagation();
     addToCart(product, 1);
+    showToast('Produit ajouté au panier', 'success');
   };
 
   const getStockStatus = (stock) => {

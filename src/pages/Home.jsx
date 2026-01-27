@@ -216,9 +216,19 @@ function Home() {
               </h1>
               <div className="hero-discount">
                 <span className="discount-amount">50%</span>
-                <span className="discount-text">OFF</span>
+                <span className="discount-text">DE RÉDUCTION</span>
               </div>
-              <button className="shop-now-btn">Shop Now</button>
+              <button 
+                className="shop-now-btn"
+                onClick={() => {
+                  const categorySection = document.querySelector('.category-filter-container');
+                  if (categorySection) {
+                    categorySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }}
+              >
+                Acheter maintenant
+              </button>
             </div>
             <div className="hero-image">
               <div className="hero-cover-image">

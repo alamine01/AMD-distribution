@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { CartProvider } from './context/CartContext';
+import { ToastContainer } from './components/Toast';
 import Home from './pages/Home';
 import Admin from './pages/Admin';
 import './App.css';
@@ -30,6 +31,7 @@ function App() {
     <CartProvider>
       <Router>
         <KeyboardShortcutHandler />
+        <ToastContainer />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<Admin />} />

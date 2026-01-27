@@ -168,22 +168,30 @@
   }
 
   .carousel-wrapper {
-    margin: 0 2rem;
+    margin: 0 0.5rem;
     padding: 0.75rem 0;
   }
 
   .carousel-button {
-    width: 40px;
-    height: 40px;
-    font-size: 1.5rem;
+    width: 24px;
+    height: 24px;
+    font-size: 0.875rem;
+    border: 1px solid #dc2626;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    opacity: 0.7;
+  }
+
+  .carousel-button:hover {
+    transform: translateY(-50%) scale(1);
+    opacity: 1;
   }
 
   .carousel-button-left {
-    left: -10px;
+    left: 2px;
   }
 
   .carousel-button-right {
-    right: -10px;
+    right: 2px;
   }
 
   .carousel-content {
@@ -192,8 +200,9 @@
   }
 
   .carousel-content .product-card {
-    max-width: 260px;
-    min-width: 260px;
+    max-width: none;
+    min-width: 280px;
+    width: 280px;
   }
 }
 
@@ -212,21 +221,29 @@
   }
 
   .carousel-wrapper {
-    margin: 0 1.5rem;
+    margin: 0 0.25rem;
   }
 
   .carousel-button {
-    width: 35px;
-    height: 35px;
-    font-size: 1.25rem;
+    width: 20px;
+    height: 20px;
+    font-size: 0.75rem;
+    border: 1px solid #dc2626;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    opacity: 0.7;
+  }
+
+  .carousel-button:hover {
+    transform: translateY(-50%) scale(1);
+    opacity: 1;
   }
 
   .carousel-button-left {
-    left: -5px;
+    left: 2px;
   }
 
   .carousel-button-right {
-    right: -5px;
+    right: 2px;
   }
 
   .carousel-content {
@@ -234,7 +251,8 @@
   }
 
   .carousel-content .product-card {
-    max-width: 240px;
-    min-width: 240px;
+    max-width: none;
+    min-width: 250px;
+    width: 250px;
   }
 }
