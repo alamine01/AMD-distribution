@@ -31,7 +31,13 @@ function Footer() {
         <div className="footer-main">
           <div className="footer-logo">
             {settings?.logoUrl ? (
-              <img src={settings.logoUrl} alt="AMD Distribution" className="footer-logo-image" style={{ maxHeight: '50px', maxWidth: '150px', objectFit: 'contain' }} />
+              <img 
+                key={settings.logoUrl} 
+                src={settings.logoUrl} 
+                alt="AMD Distribution" 
+                className="footer-logo-image" 
+                style={{ maxHeight: '50px', maxWidth: '150px', objectFit: 'contain' }} 
+              />
             ) : (
               <div className="footer-logo-icon">AMD</div>
             )}

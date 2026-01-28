@@ -171,38 +171,28 @@ function Home() {
         }
       );
 
-            return () => {
-              unsubscribeProducts();
-              unsubscribeCategories();
-            };
+      // Charger les paramètres du site en temps réel
+      const unsubscribeSettings = onSnapshot(
+        doc(db, 'settings', 'site'),
+        (settingsDoc) => {
+          if (settingsDoc.exists()) {
+            const settingsData = settingsDoc.data();
+            console.log('Paramètres mis à jour:', settingsData);
+            setSettings(settingsData);
           }
+        },
+        (error) => {
+          console.error('Erreur lors du chargement des paramètres:', error);
+        }
+      );
 
-          // Charger les paramètres du site en temps réel
-          if (!USE_LOCAL_STORAGE) {
-            const unsubscribeSettings = onSnapshot(
-              doc(db, 'settings', 'site'),
-              (settingsDoc) => {
-                if (settingsDoc.exists()) {
-                  setSettings(settingsDoc.data());
-                }
-              },
-              (error) => {
-                console.error('Erreur lors du chargement des paramètres:', error);
-              }
-            );
-            
-            return () => {
-              unsubscribeProducts();
-              unsubscribeCategories();
-              unsubscribeSettings();
-            };
-          } else {
-            return () => {
-              unsubscribeProducts();
-              unsubscribeCategories();
-            };
-          }
-        }, []);
+      return () => {
+        unsubscribeProducts();
+        unsubscribeCategories();
+        unsubscribeSettings();
+      };
+    }
+  }, []);
 
   const displayProducts = products.length > 0 ? products : previewProducts;
   const displayCategories = categories.length > 0 ? categories : previewCategories;
@@ -266,7 +256,13 @@ function Home() {
         <div className="header-content">
           <div className="logo-container">
             {settings?.logoUrl ? (
-              <img src={settings.logoUrl} alt="AMD Distribution" className="logo-image" style={{ maxHeight: '50px', maxWidth: '150px', objectFit: 'contain' }} />
+              <img 
+                key={settings.logoUrl} 
+                src={settings.logoUrl} 
+                alt="AMD Distribution" 
+                className="logo-image" 
+                style={{ maxHeight: '50px', maxWidth: '150px', objectFit: 'contain' }} 
+              />
             ) : (
               <div className="logo-icon">AMD</div>
             )}
