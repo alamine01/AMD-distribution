@@ -1,10 +1,23 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { productsStorage, categoriesStorage, ordersStorage, authStorage } from '../utils/localStorage';
+import { db, auth, storage } from '../firebase/config';
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  query,
+  orderBy
+} from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import './Admin.css';
 
-// Mode développement : utiliser localStorage au lieu de Firebase
-const USE_LOCAL_STORAGE = true;
+// Basculer sur Firebase (auth + Firestore)
+const USE_LOCAL_STORAGE = false;
 
 function Admin() {
   const [user, setUser] = useState(null);
@@ -33,16 +46,16 @@ function Admin() {
       }
     } else {
       // Mode Firebase (quand configuré)
-      // const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      //   setUser(currentUser);
-      //   setLoading(false);
-      //   if (currentUser) {
-      //     fetchProducts();
-      //     fetchCategories();
-      //     fetchOrders();
-      //   }
-      // });
-      // return () => unsubscribe();
+      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        setUser(currentUser);
+        setLoading(false);
+        if (currentUser) {
+          fetchProducts();
+          fetchCategories();
+          fetchOrders();
+        }
+      });
+      return () => unsubscribe();
     }
   }, []);
 
@@ -57,11 +70,11 @@ function Admin() {
       fetchOrders();
     } else {
       // Mode Firebase
-      // try {
-      //   await signInWithEmailAndPassword(auth, loginForm.email, loginForm.password);
-      // } catch (error) {
-      //   alert('Erreur de connexion: ' + error.message);
-      // }
+      try {
+        await signInWithEmailAndPassword(auth, loginForm.email, loginForm.password);
+      } catch (error) {
+        alert('Erreur de connexion: ' + error.message);
+      }
     }
   };
 
@@ -72,12 +85,12 @@ function Admin() {
       navigate('/');
     } else {
       // Mode Firebase
-      // try {
-      //   await signOut(auth);
-      //   navigate('/');
-      // } catch (error) {
-      //   console.error('Erreur de déconnexion:', error);
-      // }
+      try {
+        await signOut(auth);
+        navigate('/');
+      } catch (error) {
+        console.error('Erreur de déconnexion:', error);
+      }
     }
   };
 
@@ -87,17 +100,17 @@ function Admin() {
       setProducts(productsList);
     } else {
       // Mode Firebase
-      // try {
-      //   const productsCollection = collection(db, 'products');
-      //   const productsSnapshot = await getDocs(productsCollection);
-      //   const productsList = productsSnapshot.docs.map(doc => ({
-      //     id: doc.id,
-      //     ...doc.data()
-      //   }));
-      //   setProducts(productsList);
-      // } catch (error) {
-      //   console.error('Erreur lors du chargement des produits:', error);
-      // }
+      try {
+        const productsCollection = collection(db, 'products');
+        const productsSnapshot = await getDocs(productsCollection);
+        const productsList = productsSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setProducts(productsList);
+      } catch (error) {
+        console.error('Erreur lors du chargement des produits:', error);
+      }
     }
   };
 
@@ -107,17 +120,17 @@ function Admin() {
       setCategories(categoriesList);
     } else {
       // Mode Firebase
-      // try {
-      //   const categoriesCollection = collection(db, 'categories');
-      //   const categoriesSnapshot = await getDocs(categoriesCollection);
-      //   const categoriesList = categoriesSnapshot.docs.map(doc => ({
-      //     id: doc.id,
-      //     ...doc.data()
-      //   }));
-      //   setCategories(categoriesList);
-      // } catch (error) {
-      //   console.error('Erreur lors du chargement des catégories:', error);
-      // }
+      try {
+        const categoriesCollection = collection(db, 'categories');
+        const categoriesSnapshot = await getDocs(categoriesCollection);
+        const categoriesList = categoriesSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setCategories(categoriesList);
+      } catch (error) {
+        console.error('Erreur lors du chargement des catégories:', error);
+      }
     }
   };
 
@@ -133,19 +146,19 @@ function Admin() {
       setOrders(ordersList);
     } else {
       // Mode Firebase
-      // try {
-      //   const ordersCollection = collection(db, 'orders');
-      //   const ordersQuery = query(ordersCollection, orderBy('createdAt', 'desc'));
-      //   const ordersSnapshot = await getDocs(ordersQuery);
-      //   const ordersList = ordersSnapshot.docs.map(doc => ({
-      //     id: doc.id,
-      //     ...doc.data(),
-      //     createdAt: doc.data().createdAt?.toDate?.() || new Date()
-      //   }));
-      //   setOrders(ordersList);
-      // } catch (error) {
-      //   console.error('Erreur lors du chargement des commandes:', error);
-      // }
+      try {
+        const ordersCollection = collection(db, 'orders');
+        const ordersQuery = query(ordersCollection, orderBy('createdAt', 'desc'));
+        const ordersSnapshot = await getDocs(ordersQuery);
+        const ordersList = ordersSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: doc.data().createdAt?.toDate?.() || new Date()
+        }));
+        setOrders(ordersList);
+      } catch (error) {
+        console.error('Erreur lors du chargement des commandes:', error);
+      }
     }
   };
 
@@ -165,29 +178,29 @@ function Admin() {
       alert(editingProduct ? 'Produit modifié avec succès!' : 'Produit ajouté avec succès!');
     } else {
       // Mode Firebase
-      // try {
-      //   const productToSave = {
-      //     ...productData,
-      //     price: parseFloat(productData.price),
-      //     stock: parseInt(productData.stock) || 0
-      //   };
-      //   
-      //   if (editingProduct) {
-      //     await updateDoc(doc(db, 'products', editingProduct.id), productToSave);
-      //     setEditingProduct(null);
-      //   } else {
-      //     await addDoc(collection(db, 'products'), {
-      //       ...productToSave,
-      //       createdAt: new Date()
-      //     });
-      //   }
-      //   setShowProductForm(false);
-      //   fetchProducts();
-      //   alert(editingProduct ? 'Produit modifié avec succès!' : 'Produit ajouté avec succès!');
-      // } catch (error) {
-      //   console.error('Erreur lors de la sauvegarde:', error);
-      //   alert('Erreur lors de la sauvegarde du produit');
-      // }
+      try {
+        const productToSave = {
+          ...productData,
+          price: parseFloat(productData.price),
+          stock: parseInt(productData.stock) || 0
+        };
+        
+        if (editingProduct) {
+          await updateDoc(doc(db, 'products', editingProduct.id), productToSave);
+          setEditingProduct(null);
+        } else {
+          await addDoc(collection(db, 'products'), {
+            ...productToSave,
+            createdAt: new Date()
+          });
+        }
+        setShowProductForm(false);
+        fetchProducts();
+        alert(editingProduct ? 'Produit modifié avec succès!' : 'Produit ajouté avec succès!');
+      } catch (error) {
+        console.error('Erreur lors de la sauvegarde:', error);
+        alert('Erreur lors de la sauvegarde du produit');
+      }
     }
   };
 
@@ -205,22 +218,23 @@ function Admin() {
       alert(editingCategory ? 'Catégorie modifiée avec succès!' : 'Catégorie ajoutée avec succès!');
     } else {
       // Mode Firebase
-      // try {
-      //   if (editingCategory) {
-      //     await updateDoc(doc(db, 'categories', editingCategory.id), categoryData);
-      //     setEditingCategory(null);
-      //   } else {
-      //     await addDoc(collection(db, 'categories'), {
-      //       ...categoryData,
-      //       createdAt: new Date()
-      //     });
-      //   }
-      //   setShowCategoryForm(false);
-      //   fetchCategories();
-      // } catch (error) {
-      //   console.error('Erreur lors de la sauvegarde:', error);
-      //   alert('Erreur lors de la sauvegarde de la catégorie');
-      // }
+      try {
+        if (editingCategory) {
+          await updateDoc(doc(db, 'categories', editingCategory.id), categoryData);
+          setEditingCategory(null);
+        } else {
+          await addDoc(collection(db, 'categories'), {
+            ...categoryData,
+            createdAt: new Date()
+          });
+        }
+        setShowCategoryForm(false);
+        fetchCategories();
+        alert(editingCategory ? 'Catégorie modifiée avec succès!' : 'Catégorie ajoutée avec succès!');
+      } catch (error) {
+        console.error('Erreur lors de la sauvegarde de la catégorie:', error);
+        alert('Erreur lors de la sauvegarde de la catégorie');
+      }
     }
   };
 
@@ -231,13 +245,13 @@ function Admin() {
         fetchCategories();
       } else {
         // Mode Firebase
-        // try {
-        //   await deleteDoc(doc(db, 'categories', categoryId));
-        //   fetchCategories();
-        // } catch (error) {
-        //   console.error('Erreur lors de la suppression:', error);
-        //   alert('Erreur lors de la suppression de la catégorie');
-        // }
+        try {
+          await deleteDoc(doc(db, 'categories', categoryId));
+          fetchCategories();
+        } catch (error) {
+          console.error('Erreur lors de la suppression de la catégorie:', error);
+          alert('Erreur lors de la suppression de la catégorie');
+        }
       }
     }
   };
@@ -254,13 +268,13 @@ function Admin() {
         fetchProducts();
       } else {
         // Mode Firebase
-        // try {
-        //   await deleteDoc(doc(db, 'products', productId));
-        //   fetchProducts();
-        // } catch (error) {
-        //   console.error('Erreur lors de la suppression:', error);
-        //   alert('Erreur lors de la suppression du produit');
-        // }
+        try {
+          await deleteDoc(doc(db, 'products', productId));
+          fetchProducts();
+        } catch (error) {
+          console.error('Erreur lors de la suppression du produit:', error);
+          alert('Erreur lors de la suppression du produit');
+        }
       }
     }
   };
@@ -276,12 +290,12 @@ function Admin() {
       fetchOrders();
     } else {
       // Mode Firebase
-      // try {
-      //   await updateDoc(doc(db, 'orders', orderId), { status: newStatus });
-      //   fetchOrders();
-      // } catch (error) {
-      //   console.error('Erreur lors de la mise à jour:', error);
-      // }
+      try {
+        await updateDoc(doc(db, 'orders', orderId), { status: newStatus });
+        fetchOrders();
+      } catch (error) {
+        console.error('Erreur lors de la mise à jour de la commande:', error);
+      }
     }
   };
 
@@ -496,22 +510,27 @@ function ProductForm({ product, categories, onClose, onSubmit }) {
     setUploading(true);
 
     try {
-      // Convertir l'image en base64
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result;
-        setFormData(prev => ({ ...prev, imageUrl: base64String }));
-        setImagePreview(base64String);
-        setUploading(false);
-      };
-      reader.onerror = () => {
-        alert('Erreur lors de la lecture de l\'image');
-        setUploading(false);
-      };
-      reader.readAsDataURL(file);
+      // Chemin unique pour chaque image
+      const timestamp = Date.now();
+      const random = Math.random().toString(36).slice(2, 8);
+      const extension = file.name.split('.').pop() || 'jpg';
+      const fileName = `products/${timestamp}_${random}.${extension}`;
+
+      const storageRef = ref(storage, fileName);
+
+      // Téléverser le fichier dans Firebase Storage
+      await uploadBytes(storageRef, file);
+
+      // Récupérer l'URL publique de téléchargement
+      const downloadURL = await getDownloadURL(storageRef);
+
+      // Enregistrer l'URL dans le formulaire
+      setFormData(prev => ({ ...prev, imageUrl: downloadURL }));
+      setImagePreview(downloadURL);
     } catch (error) {
-      console.error('Erreur lors du téléversement:', error);
-      alert('Erreur lors du téléversement de l\'image');
+      console.error('Erreur lors du téléversement vers Firebase Storage:', error);
+      alert('Erreur lors du téléversement de l\'image. Veuillez réessayer.');
+    } finally {
       setUploading(false);
     }
   };
