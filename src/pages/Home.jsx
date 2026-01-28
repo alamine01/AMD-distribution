@@ -316,10 +316,10 @@ function Home() {
             <div className="hero-text">
               <h1 className="hero-title">
                 {settings?.heroTitle ? (
-                  settings.heroTitle.split('\\n').map((line, index) => (
+                  settings.heroTitle.split('\n').map((line, index, array) => (
                     <span key={index}>
                       {line}
-                      {index < settings.heroTitle.split('\\n').length - 1 && <br />}
+                      {index < array.length - 1 && <br />}
                     </span>
                   ))
                 ) : (

@@ -1072,7 +1072,12 @@ function SettingsForm({ settings, onClose, onSubmit }) {
           <h2>Paramètres du site</h2>
           <button className="close-button" onClick={onClose}>×</button>
         </div>
-        <form onSubmit={handleSubmit} className="product-form">
+        <form onSubmit={handleSubmit} className="product-form" onKeyDown={(e) => {
+          // Empêcher la soumission du formulaire si Entrée est pressée dans un textarea
+          if (e.key === 'Enter' && e.target.tagName === 'TEXTAREA') {
+            e.stopPropagation();
+          }
+        }}>
           <div className="form-group">
             <label>Logo</label>
             <div className="image-upload-container">
@@ -1141,15 +1146,28 @@ function SettingsForm({ settings, onClose, onSubmit }) {
 
           <div className="form-group">
             <label>Titre Hero (Section principale)</label>
-            <input
-              type="text"
+            <textarea
               name="heroTitle"
               value={formData.heroTitle}
               onChange={handleChange}
-              placeholder="ALL BEAUTIFUL\nCOLLECTION"
-              style={{ minHeight: '60px' }}
+              onKeyDown={(e) => {
+                // Empêcher la soumission du formulaire quand Entrée est pressée dans le textarea
+                if (e.key === 'Enter') {
+                  e.stopPropagation();
+                }
+              }}
+              placeholder="ALL BEAUTIFUL&#10;COLLECTION"
+              rows={3}
+              style={{ 
+                width: '100%', 
+                padding: '0.5rem', 
+                border: '1px solid #ddd', 
+                borderRadius: '4px',
+                fontFamily: 'inherit',
+                fontSize: '1rem'
+              }}
             />
-            <small style={{ color: '#666', fontSize: '0.875rem' }}>Utilisez \n pour un saut de ligne</small>
+            <small style={{ color: '#666', fontSize: '0.875rem' }}>Appuyez sur Entrée pour un saut de ligne</small>
           </div>
 
           <div className="form-group">
