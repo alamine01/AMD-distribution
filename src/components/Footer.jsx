@@ -1,23 +1,28 @@
 import { useState, useEffect } from 'react';
 import { db } from '../firebase/config';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 import './Footer.css';
 
 function Footer() {
   const [settings, setSettings] = useState(null);
 
   useEffect(() => {
-    const loadSettings = async () => {
-      try {
-        const settingsDoc = await getDoc(doc(db, 'settings', 'site'));
+    // Charger les paramètres en temps réel
+    const unsubscribeSettings = onSnapshot(
+      doc(db, 'settings', 'site'),
+      (settingsDoc) => {
         if (settingsDoc.exists()) {
           setSettings(settingsDoc.data());
         }
-      } catch (error) {
+      },
+      (error) => {
         console.error('Erreur lors du chargement des paramètres:', error);
       }
+    );
+
+    return () => {
+      unsubscribeSettings();
     };
-    loadSettings();
   }, []);
 
   return (

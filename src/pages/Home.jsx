@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { productsStorage, categoriesStorage } from '../utils/localStorage';
 import { db } from '../firebase/config';
-import { collection, getDocs, onSnapshot, doc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot, doc } from 'firebase/firestore';
 import Footer from '../components/Footer';
 import ProductCarousel from '../components/ProductCarousel';
 import Cart from '../components/Cart';
@@ -177,19 +177,30 @@ function Home() {
             };
           }
 
-          // Charger les paramètres du site
-          const loadSettings = async () => {
-            try {
-              const settingsDoc = await getDoc(doc(db, 'settings', 'site'));
-              if (settingsDoc.exists()) {
-                setSettings(settingsDoc.data());
-              }
-            } catch (error) {
-              console.error('Erreur lors du chargement des paramètres:', error);
-            }
-          };
+          // Charger les paramètres du site en temps réel
           if (!USE_LOCAL_STORAGE) {
-            loadSettings();
+            const unsubscribeSettings = onSnapshot(
+              doc(db, 'settings', 'site'),
+              (settingsDoc) => {
+                if (settingsDoc.exists()) {
+                  setSettings(settingsDoc.data());
+                }
+              },
+              (error) => {
+                console.error('Erreur lors du chargement des paramètres:', error);
+              }
+            );
+            
+            return () => {
+              unsubscribeProducts();
+              unsubscribeCategories();
+              unsubscribeSettings();
+            };
+          } else {
+            return () => {
+              unsubscribeProducts();
+              unsubscribeCategories();
+            };
           }
         }, []);
 

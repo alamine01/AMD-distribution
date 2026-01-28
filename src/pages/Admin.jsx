@@ -1034,7 +1034,8 @@ function SettingsForm({ settings, onClose, onSubmit }) {
       setUploading(prev => ({ ...prev, [imageType]: false }));
     } catch (error) {
       console.error('Erreur lors du téléversement:', error);
-      alert('Erreur lors du téléversement de l\'image');
+      console.error('Détails de l\'erreur:', error.code, error.message);
+      alert('Erreur lors du téléversement de l\'image: ' + (error.message || 'Erreur inconnue'));
       setUploading(prev => ({ ...prev, [imageType]: false }));
     }
   };
