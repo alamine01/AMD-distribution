@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { productsStorage, categoriesStorage } from '../utils/localStorage';
 import { db } from '../firebase/config';
-import { collection, getDocs, onSnapshot } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot, doc, getDoc } from 'firebase/firestore';
 import Footer from '../components/Footer';
 import ProductCarousel from '../components/ProductCarousel';
 import Cart from '../components/Cart';
@@ -16,6 +16,7 @@ function Home() {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
+  const [settings, setSettings] = useState(null);
 
   // Catégories de prévisualisation
   const previewCategories = [
@@ -170,12 +171,27 @@ function Home() {
         }
       );
 
-      return () => {
-        unsubscribeProducts();
-        unsubscribeCategories();
-      };
-    }
-  }, []);
+            return () => {
+              unsubscribeProducts();
+              unsubscribeCategories();
+            };
+          }
+
+          // Charger les paramètres du site
+          const loadSettings = async () => {
+            try {
+              const settingsDoc = await getDoc(doc(db, 'settings', 'site'));
+              if (settingsDoc.exists()) {
+                setSettings(settingsDoc.data());
+              }
+            } catch (error) {
+              console.error('Erreur lors du chargement des paramètres:', error);
+            }
+          };
+          if (!USE_LOCAL_STORAGE) {
+            loadSettings();
+          }
+        }, []);
 
   const displayProducts = products.length > 0 ? products : previewProducts;
   const displayCategories = categories.length > 0 ? categories : previewCategories;
@@ -238,7 +254,11 @@ function Home() {
       <header className="header">
         <div className="header-content">
           <div className="logo-container">
-            <div className="logo-icon">AMD</div>
+            {settings?.logoUrl ? (
+              <img src={settings.logoUrl} alt="AMD Distribution" className="logo-image" style={{ maxHeight: '50px', maxWidth: '150px', objectFit: 'contain' }} />
+            ) : (
+              <div className="logo-icon">AMD</div>
+            )}
           </div>
           <div className="header-actions">
             <Cart />
@@ -272,7 +292,7 @@ function Home() {
             </div>
             <div className="hero-image">
               <div className="hero-cover-image">
-                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop" alt="AMD Distribution - Boutique moderne" />
+                <img src={settings?.heroImageUrl || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop"} alt="AMD Distribution - Boutique moderne" />
               </div>
             </div>
           </div>
@@ -354,7 +374,7 @@ function Home() {
           </div>
           <div className="column-right">
             <div className="content-image large">
-              <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop" alt="Boutique moderne" />
+              <img src={settings?.whyChooseImageUrl || "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop"} alt="Boutique moderne" />
             </div>
           </div>
         </section>
@@ -389,7 +409,7 @@ function Home() {
               </div>
             </div>
             <div className="numbered-image">
-              <img src="https://images.unsplash.com/photo-1556740758-90de374c12ad?w=600&h=600&fit=crop" alt="Processus de commande" />
+              <img src={settings?.howItWorksImageUrl || "https://images.unsplash.com/photo-1556740758-90de374c12ad?w=600&h=600&fit=crop"} alt="Processus de commande" />
             </div>
           </div>
         </section>

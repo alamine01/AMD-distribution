@@ -10,7 +10,9 @@ import {
   deleteDoc,
   doc,
   query,
-  orderBy
+  orderBy,
+  getDoc,
+  setDoc
 } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
@@ -25,8 +27,10 @@ function Admin() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [settings, setSettings] = useState(null);
   const [showProductForm, setShowProductForm] = useState(false);
   const [showCategoryForm, setShowCategoryForm] = useState(false);
+  const [showSettingsForm, setShowSettingsForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [editingCategory, setEditingCategory] = useState(null);
   const [activeTab, setActiveTab] = useState('products');
@@ -39,11 +43,12 @@ function Admin() {
       const currentUser = authStorage.getCurrentUser();
       setUser(currentUser);
       setLoading(false);
-      if (currentUser) {
-        fetchProducts();
-        fetchCategories();
-        fetchOrders();
-      }
+        if (currentUser) {
+          fetchProducts();
+          fetchCategories();
+          fetchOrders();
+          fetchSettings();
+        }
     } else {
       // Mode Firebase (quand configuré)
       const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -53,6 +58,7 @@ function Admin() {
           fetchProducts();
           fetchCategories();
           fetchOrders();
+          fetchSettings();
         }
       });
       return () => unsubscribe();
@@ -354,6 +360,15 @@ function Admin() {
         >
           Catégories
         </button>
+        <button
+          className={activeTab === 'settings' ? 'active' : ''}
+          onClick={() => {
+            setActiveTab('settings');
+            if (!settings) fetchSettings();
+          }}
+        >
+          Paramètres
+        </button>
       </div>
 
       <main className="admin-main">
@@ -441,6 +456,47 @@ function Admin() {
                 ))
               )}
             </div>
+          </div>
+        )}
+
+        {activeTab === 'settings' && (
+          <div className="settings-admin">
+            <div className="admin-section-header">
+              <h2>Paramètres du site</h2>
+              <button
+                onClick={() => {
+                  setShowSettingsForm(true);
+                }}
+                className="add-button"
+              >
+                {settings ? 'Modifier les paramètres' : 'Configurer les paramètres'}
+              </button>
+            </div>
+
+            {showSettingsForm && (
+              <SettingsForm
+                settings={settings}
+                onClose={() => {
+                  setShowSettingsForm(false);
+                }}
+                onSubmit={handleSettingsSubmit}
+              />
+            )}
+
+            {settings && !showSettingsForm && (
+              <div className="settings-preview">
+                <h3>Aperçu des paramètres actuels</h3>
+                <div className="settings-info">
+                  <p><strong>Logo:</strong> {settings.logoUrl ? '✓ Configuré' : '✗ Non configuré'}</p>
+                  <p><strong>Image Hero:</strong> {settings.heroImageUrl ? '✓ Configurée' : '✗ Non configurée'}</p>
+                  <p><strong>Image "Pourquoi choisir":</strong> {settings.whyChooseImageUrl ? '✓ Configurée' : '✗ Non configurée'}</p>
+                  <p><strong>Image "Comment ça marche":</strong> {settings.howItWorksImageUrl ? '✓ Configurée' : '✗ Non configurée'}</p>
+                  <p><strong>Facebook:</strong> {settings.socialLinks?.facebook || 'Non configuré'}</p>
+                  <p><strong>Instagram:</strong> {settings.socialLinks?.instagram || 'Non configuré'}</p>
+                  <p><strong>WhatsApp:</strong> {settings.socialLinks?.whatsapp || 'Non configuré'}</p>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -846,6 +902,297 @@ function CategoryAdminCard({ category, onEdit, onDelete }) {
         <button onClick={() => onDelete(category.id)} className="delete-button">
           Supprimer
         </button>
+      </div>
+    </div>
+  );
+}
+
+function SettingsForm({ settings, onClose, onSubmit }) {
+  const [formData, setFormData] = useState({
+    logoUrl: settings?.logoUrl || '',
+    heroImageUrl: settings?.heroImageUrl || 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop',
+    whyChooseImageUrl: settings?.whyChooseImageUrl || 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop',
+    howItWorksImageUrl: settings?.howItWorksImageUrl || 'https://images.unsplash.com/photo-1556740758-90de374c12ad?w=600&h=600&fit=crop',
+    socialLinks: {
+      facebook: settings?.socialLinks?.facebook || '',
+      instagram: settings?.socialLinks?.instagram || '',
+      whatsapp: settings?.socialLinks?.whatsapp || ''
+    }
+  });
+  const [uploading, setUploading] = useState({});
+  const [imagePreviews, setImagePreviews] = useState({
+    logo: settings?.logoUrl || '',
+    hero: settings?.heroImageUrl || '',
+    whyChoose: settings?.whyChooseImageUrl || '',
+    howItWorks: settings?.howItWorksImageUrl || ''
+  });
+
+  useEffect(() => {
+    if (settings) {
+      setFormData({
+        logoUrl: settings.logoUrl || '',
+        heroImageUrl: settings.heroImageUrl || 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop',
+        whyChooseImageUrl: settings.whyChooseImageUrl || 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop',
+        howItWorksImageUrl: settings.howItWorksImageUrl || 'https://images.unsplash.com/photo-1556740758-90de374c12ad?w=600&h=600&fit=crop',
+        socialLinks: {
+          facebook: settings.socialLinks?.facebook || '',
+          instagram: settings.socialLinks?.instagram || '',
+          whatsapp: settings.socialLinks?.whatsapp || ''
+        }
+      });
+      setImagePreviews({
+        logo: settings.logoUrl || '',
+        hero: settings.heroImageUrl || '',
+        whyChoose: settings.whyChooseImageUrl || '',
+        howItWorks: settings.howItWorksImageUrl || ''
+      });
+    }
+  }, [settings]);
+
+  const handleImageUpload = async (e, imageType) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Veuillez sélectionner un fichier image valide');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert('L\'image est trop grande. Taille maximale : 5MB');
+      return;
+    }
+
+    setUploading(prev => ({ ...prev, [imageType]: true }));
+
+    try {
+      const timestamp = Date.now();
+      const randomString = Math.random().toString(36).substring(2, 8);
+      const fileExtension = file.name.split('.').pop();
+      const fileName = `${timestamp}_${randomString}.${fileExtension}`;
+      const storageRef = ref(storage, `settings/${fileName}`);
+      
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+
+      const fieldName = imageType === 'logo' ? 'logoUrl' :
+                       imageType === 'hero' ? 'heroImageUrl' :
+                       imageType === 'whyChoose' ? 'whyChooseImageUrl' :
+                       'howItWorksImageUrl';
+
+      setFormData(prev => ({ ...prev, [fieldName]: downloadURL }));
+      setImagePreviews(prev => ({ ...prev, [imageType]: downloadURL }));
+      setUploading(prev => ({ ...prev, [imageType]: false }));
+    } catch (error) {
+      console.error('Erreur lors du téléversement:', error);
+      alert('Erreur lors du téléversement de l\'image');
+      setUploading(prev => ({ ...prev, [imageType]: false }));
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name.startsWith('social_')) {
+      const socialType = name.replace('social_', '');
+      setFormData(prev => ({
+        ...prev,
+        socialLinks: {
+          ...prev.socialLinks,
+          [socialType]: value
+        }
+      }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '700px', maxHeight: '90vh', overflowY: 'auto' }}>
+        <div className="modal-header">
+          <h2>Paramètres du site</h2>
+          <button className="close-button" onClick={onClose}>×</button>
+        </div>
+        <form onSubmit={handleSubmit} className="product-form">
+          <div className="form-group">
+            <label>Logo</label>
+            <div className="image-upload-container">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleImageUpload(e, 'logo')}
+                disabled={uploading.logo}
+                className="file-input"
+                id="logo-upload"
+              />
+              <label htmlFor="logo-upload" className="file-input-label">
+                {uploading.logo ? 'Téléversement...' : '📷 Téléverser le logo'}
+              </label>
+              {imagePreviews.logo && (
+                <div className="image-preview-container">
+                  <img src={imagePreviews.logo} alt="Logo" className="image-preview" style={{ maxHeight: '100px' }} />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormData(prev => ({ ...prev, logoUrl: '' }));
+                      setImagePreviews(prev => ({ ...prev, logo: '' }));
+                      document.getElementById('logo-upload').value = '';
+                    }}
+                    className="remove-image-button"
+                  >
+                    ✕ Supprimer
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Image Hero (Section principale)</label>
+            <div className="image-upload-container">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleImageUpload(e, 'hero')}
+                disabled={uploading.hero}
+                className="file-input"
+                id="hero-upload"
+              />
+              <label htmlFor="hero-upload" className="file-input-label">
+                {uploading.hero ? 'Téléversement...' : '📷 Téléverser l\'image hero'}
+              </label>
+              {imagePreviews.hero && (
+                <div className="image-preview-container">
+                  <img src={imagePreviews.hero} alt="Hero" className="image-preview" />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormData(prev => ({ ...prev, heroImageUrl: '' }));
+                      setImagePreviews(prev => ({ ...prev, hero: '' }));
+                      document.getElementById('hero-upload').value = '';
+                    }}
+                    className="remove-image-button"
+                  >
+                    ✕ Supprimer
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Image "Pourquoi choisir AMD Distribution"</label>
+            <div className="image-upload-container">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleImageUpload(e, 'whyChoose')}
+                disabled={uploading.whyChoose}
+                className="file-input"
+                id="whyChoose-upload"
+              />
+              <label htmlFor="whyChoose-upload" className="file-input-label">
+                {uploading.whyChoose ? 'Téléversement...' : '📷 Téléverser l\'image'}
+              </label>
+              {imagePreviews.whyChoose && (
+                <div className="image-preview-container">
+                  <img src={imagePreviews.whyChoose} alt="Why Choose" className="image-preview" />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormData(prev => ({ ...prev, whyChooseImageUrl: '' }));
+                      setImagePreviews(prev => ({ ...prev, whyChoose: '' }));
+                      document.getElementById('whyChoose-upload').value = '';
+                    }}
+                    className="remove-image-button"
+                  >
+                    ✕ Supprimer
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Image "Comment ça marche"</label>
+            <div className="image-upload-container">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleImageUpload(e, 'howItWorks')}
+                disabled={uploading.howItWorks}
+                className="file-input"
+                id="howItWorks-upload"
+              />
+              <label htmlFor="howItWorks-upload" className="file-input-label">
+                {uploading.howItWorks ? 'Téléversement...' : '📷 Téléverser l\'image'}
+              </label>
+              {imagePreviews.howItWorks && (
+                <div className="image-preview-container">
+                  <img src={imagePreviews.howItWorks} alt="How It Works" className="image-preview" />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormData(prev => ({ ...prev, howItWorksImageUrl: '' }));
+                      setImagePreviews(prev => ({ ...prev, howItWorks: '' }));
+                      document.getElementById('howItWorks-upload').value = '';
+                    }}
+                    className="remove-image-button"
+                  >
+                    ✕ Supprimer
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Lien Facebook</label>
+            <input
+              type="url"
+              name="social_facebook"
+              value={formData.socialLinks.facebook}
+              onChange={handleChange}
+              placeholder="https://facebook.com/votre-page"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Lien Instagram</label>
+            <input
+              type="url"
+              name="social_instagram"
+              value={formData.socialLinks.instagram}
+              onChange={handleChange}
+              placeholder="https://instagram.com/votre-compte"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Lien WhatsApp</label>
+            <input
+              type="url"
+              name="social_whatsapp"
+              value={formData.socialLinks.whatsapp}
+              onChange={handleChange}
+              placeholder="https://wa.me/221771234567"
+            />
+          </div>
+
+          <div className="form-actions">
+            <button type="button" onClick={onClose} className="cancel-button">
+              Annuler
+            </button>
+            <button type="submit" className="submit-button">
+              Enregistrer
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
