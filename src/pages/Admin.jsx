@@ -320,6 +320,7 @@ function Admin() {
             heroImageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop',
             heroTitle: 'ALL BEAUTIFUL\nCOLLECTION',
             heroDiscount: '50% DE RÉDUCTION',
+            primaryColor: '#dc2626',
             whyChooseImageUrl: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop',
             howItWorksImageUrl: 'https://images.unsplash.com/photo-1556740758-90de374c12ad?w=600&h=600&fit=crop',
             socialLinks: {
@@ -962,6 +963,9 @@ function SettingsForm({ settings, onClose, onSubmit }) {
   const [formData, setFormData] = useState({
     logoUrl: settings?.logoUrl || '',
     heroImageUrl: settings?.heroImageUrl || 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop',
+    heroTitle: settings?.heroTitle || 'ALL BEAUTIFUL\nCOLLECTION',
+    heroDiscount: settings?.heroDiscount || '50% DE RÉDUCTION',
+    primaryColor: settings?.primaryColor || '#dc2626',
     whyChooseImageUrl: settings?.whyChooseImageUrl || 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop',
     howItWorksImageUrl: settings?.howItWorksImageUrl || 'https://images.unsplash.com/photo-1556740758-90de374c12ad?w=600&h=600&fit=crop',
     socialLinks: {
@@ -985,6 +989,7 @@ function SettingsForm({ settings, onClose, onSubmit }) {
         heroImageUrl: settings.heroImageUrl || 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop',
         heroTitle: settings.heroTitle || 'ALL BEAUTIFUL\nCOLLECTION',
         heroDiscount: settings.heroDiscount || '50% DE RÉDUCTION',
+        primaryColor: settings.primaryColor || '#dc2626',
         whyChooseImageUrl: settings.whyChooseImageUrl || 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop',
         howItWorksImageUrl: settings.howItWorksImageUrl || 'https://images.unsplash.com/photo-1556740758-90de374c12ad?w=600&h=600&fit=crop',
         socialLinks: {
@@ -1179,6 +1184,28 @@ function SettingsForm({ settings, onClose, onSubmit }) {
               onChange={handleChange}
               placeholder="50% DE RÉDUCTION"
             />
+          </div>
+
+          <div className="form-group">
+            <label>Couleur principale du site</label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <input
+                type="color"
+                name="primaryColor"
+                value={formData.primaryColor}
+                onChange={handleChange}
+                style={{ width: '60px', height: '40px', cursor: 'pointer' }}
+              />
+              <input
+                type="text"
+                name="primaryColor"
+                value={formData.primaryColor}
+                onChange={handleChange}
+                placeholder="#dc2626"
+                style={{ flex: 1, padding: '0.5rem', border: '1px solid #ddd', borderRadius: '4px' }}
+              />
+            </div>
+            <small style={{ color: '#666', fontSize: '0.875rem' }}>Cette couleur remplacera le rouge partout sur le site</small>
           </div>
 
           <div className="form-group">
