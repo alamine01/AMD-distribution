@@ -318,6 +318,8 @@ function Admin() {
           const defaultSettings = {
             logoUrl: '',
             heroImageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop',
+            heroTitle: 'ALL BEAUTIFUL\nCOLLECTION',
+            heroDiscount: '50% DE RÉDUCTION',
             whyChooseImageUrl: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop',
             howItWorksImageUrl: 'https://images.unsplash.com/photo-1556740758-90de374c12ad?w=600&h=600&fit=crop',
             socialLinks: {
@@ -981,6 +983,8 @@ function SettingsForm({ settings, onClose, onSubmit }) {
       setFormData({
         logoUrl: settings.logoUrl || '',
         heroImageUrl: settings.heroImageUrl || 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop',
+        heroTitle: settings.heroTitle || 'ALL BEAUTIFUL\nCOLLECTION',
+        heroDiscount: settings.heroDiscount || '50% DE RÉDUCTION',
         whyChooseImageUrl: settings.whyChooseImageUrl || 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop',
         howItWorksImageUrl: settings.howItWorksImageUrl || 'https://images.unsplash.com/photo-1556740758-90de374c12ad?w=600&h=600&fit=crop',
         socialLinks: {
@@ -1133,6 +1137,30 @@ function SettingsForm({ settings, onClose, onSubmit }) {
                 </div>
               )}
             </div>
+          </div>
+
+          <div className="form-group">
+            <label>Titre Hero (Section principale)</label>
+            <input
+              type="text"
+              name="heroTitle"
+              value={formData.heroTitle}
+              onChange={handleChange}
+              placeholder="ALL BEAUTIFUL\nCOLLECTION"
+              style={{ minHeight: '60px' }}
+            />
+            <small style={{ color: '#666', fontSize: '0.875rem' }}>Utilisez \n pour un saut de ligne</small>
+          </div>
+
+          <div className="form-group">
+            <label>Promotion Hero (ex: 50% DE RÉDUCTION)</label>
+            <input
+              type="text"
+              name="heroDiscount"
+              value={formData.heroDiscount}
+              onChange={handleChange}
+              placeholder="50% DE RÉDUCTION"
+            />
           </div>
 
           <div className="form-group">

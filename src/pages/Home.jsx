@@ -315,12 +315,42 @@ function Home() {
           <div className="hero-content">
             <div className="hero-text">
               <h1 className="hero-title">
-                ALL BEAUTIFUL<br />
-                COLLECTION
+                {settings?.heroTitle ? (
+                  settings.heroTitle.split('\\n').map((line, index) => (
+                    <span key={index}>
+                      {line}
+                      {index < settings.heroTitle.split('\\n').length - 1 && <br />}
+                    </span>
+                  ))
+                ) : (
+                  <>
+                    ALL BEAUTIFUL<br />
+                    COLLECTION
+                  </>
+                )}
               </h1>
               <div className="hero-discount">
-                <span className="discount-amount">50%</span>
-                <span className="discount-text">DE RÉDUCTION</span>
+                {settings?.heroDiscount ? (
+                  (() => {
+                    // Séparer le pourcentage du reste du texte
+                    const match = settings.heroDiscount.match(/(\d+%)\s*(.*)/);
+                    if (match) {
+                      return (
+                        <>
+                          <span className="discount-amount">{match[1]}</span>
+                          {match[2] && <span className="discount-text">{match[2]}</span>}
+                        </>
+                      );
+                    }
+                    // Si pas de format attendu, afficher tel quel
+                    return <span className="discount-text">{settings.heroDiscount}</span>;
+                  })()
+                ) : (
+                  <>
+                    <span className="discount-amount">50%</span>
+                    <span className="discount-text">DE RÉDUCTION</span>
+                  </>
+                )}
               </div>
               <button 
                 className="shop-now-btn"
