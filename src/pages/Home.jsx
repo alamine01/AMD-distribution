@@ -217,15 +217,6 @@ function Home() {
     }
   }, [settings?.logoUrl]);
 
-  // Mettre à jour la couleur principale du site
-  useEffect(() => {
-    if (settings?.primaryColor) {
-      document.documentElement.style.setProperty('--primary-color', settings.primaryColor);
-    } else {
-      document.documentElement.style.setProperty('--primary-color', '#dc2626');
-    }
-  }, [settings?.primaryColor]);
-
   const displayProducts = products.length > 0 ? products : previewProducts;
   const displayCategories = categories.length > 0 ? categories : previewCategories;
 
