@@ -305,6 +305,55 @@ function Admin() {
     }
   };
 
+  const fetchSettings = async () => {
+    if (USE_LOCAL_STORAGE) {
+      setSettings(null);
+    } else {
+      try {
+        const settingsDoc = await getDoc(doc(db, 'settings', 'site'));
+        if (settingsDoc.exists()) {
+          setSettings(settingsDoc.data());
+        } else {
+          // Créer les settings par défaut
+          const defaultSettings = {
+            logoUrl: '',
+            heroImageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop',
+            whyChooseImageUrl: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop',
+            howItWorksImageUrl: 'https://images.unsplash.com/photo-1556740758-90de374c12ad?w=600&h=600&fit=crop',
+            socialLinks: {
+              facebook: '',
+              instagram: '',
+              whatsapp: ''
+            }
+          };
+          await setDoc(doc(db, 'settings', 'site'), defaultSettings);
+          setSettings(defaultSettings);
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement des paramètres:', error);
+      }
+    }
+  };
+
+  const handleSettingsSubmit = async (settingsData) => {
+    if (USE_LOCAL_STORAGE) {
+      alert('Mode localStorage - les paramètres ne sont pas sauvegardés');
+    } else {
+      try {
+        await setDoc(doc(db, 'settings', 'site'), {
+          ...settingsData,
+          updatedAt: new Date()
+        }, { merge: true });
+        setSettings(settingsData);
+        setShowSettingsForm(false);
+        alert('Paramètres mis à jour avec succès!');
+      } catch (error) {
+        console.error('Erreur lors de la sauvegarde:', error);
+        alert('Erreur lors de la sauvegarde des paramètres');
+      }
+    }
+  };
+
   if (loading) {
     return <div className="admin-loading">Chargement...</div>;
   }
