@@ -194,6 +194,29 @@ function Home() {
     }
   }, []);
 
+  // Mettre à jour le favicon quand le logo change
+  useEffect(() => {
+    if (settings?.logoUrl) {
+      // Trouver ou créer le lien favicon
+      let link = document.querySelector("link[rel~='icon']");
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.getElementsByTagName('head')[0].appendChild(link);
+      }
+      link.href = settings.logoUrl;
+      
+      // Mettre à jour aussi apple-touch-icon pour iOS
+      let appleLink = document.querySelector("link[rel~='apple-touch-icon']");
+      if (!appleLink) {
+        appleLink = document.createElement('link');
+        appleLink.rel = 'apple-touch-icon';
+        document.getElementsByTagName('head')[0].appendChild(appleLink);
+      }
+      appleLink.href = settings.logoUrl;
+    }
+  }, [settings?.logoUrl]);
+
   const displayProducts = products.length > 0 ? products : previewProducts;
   const displayCategories = categories.length > 0 ? categories : previewCategories;
 
