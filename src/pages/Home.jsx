@@ -272,6 +272,20 @@ function Home() {
     window.open(whatsappUrl, '_blank');
   };
 
+  const handleLearnMoreClick = (e) => {
+    e.preventDefault();
+    const message = encodeURIComponent('Bonjour, je souhaite en savoir plus sur la qualité premium de vos produits.');
+    const whatsappUrl = `https://wa.me/${CONTACT_CONFIG.whatsappNumber}?text=${message}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  const handleContactClick = (e) => {
+    e.preventDefault();
+    const message = encodeURIComponent('Bonjour, je souhaite vous contacter pour une question ou un besoin spécifique.');
+    const whatsappUrl = `https://wa.me/${CONTACT_CONFIG.whatsappNumber}?text=${message}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
 
   return (
     <div className="home-container">
@@ -383,7 +397,7 @@ function Home() {
               <div className="content-text">
                 <h3 className="content-item-title">Qualité Premium</h3>
                 <p className="content-item-description">Nous sélectionnons uniquement les meilleurs produits pour vous garantir satisfaction et durabilité.</p>
-                <a href="#" className="content-link">En savoir plus →</a>
+                <a href="#" className="content-link" onClick={handleLearnMoreClick}>En savoir plus →</a>
               </div>
             </div>
             <div className="content-item">
@@ -398,7 +412,7 @@ function Home() {
               <div className="content-text">
                 <h3 className="content-item-title">Service Client Exceptionnel</h3>
                 <p className="content-item-description">Notre équipe est à votre écoute pour répondre à toutes vos questions et besoins.</p>
-                <a href="#" className="content-link">Nous contacter →</a>
+                <a href="#" className="content-link" onClick={handleContactClick}>Nous contacter →</a>
               </div>
             </div>
           </div>
