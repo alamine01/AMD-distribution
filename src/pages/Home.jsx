@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { productsStorage, categoriesStorage } from '../utils/localStorage';
+import { db } from '../firebase/config';
+import { collection, getDocs, onSnapshot } from 'firebase/firestore';
 import Footer from '../components/Footer';
 import ProductCarousel from '../components/ProductCarousel';
 import Cart from '../components/Cart';
@@ -7,7 +9,7 @@ import { CONTACT_CONFIG } from '../config/contact';
 import './Home.css';
 
 // Mode développement : utiliser localStorage au lieu de Firebase
-const USE_LOCAL_STORAGE = true;
+const USE_LOCAL_STORAGE = false;
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -72,20 +74,20 @@ function Home() {
       setLoading(false);
     } else {
       // Mode Firebase
-      // try {
-      //   const productsCollection = collection(db, 'products');
-      //   const productsSnapshot = await getDocs(productsCollection);
-      //   const productsList = productsSnapshot.docs.map(doc => ({
-      //     id: doc.id,
-      //     ...doc.data()
-      //   }));
-      //   setProducts(productsList.length > 0 ? productsList : previewProducts);
-      // } catch (error) {
-      //   console.error('Erreur lors du chargement des produits:', error);
-      //   setProducts(previewProducts);
-      // } finally {
-      //   setLoading(false);
-      // }
+      try {
+        const productsCollection = collection(db, 'products');
+        const productsSnapshot = await getDocs(productsCollection);
+        const productsList = productsSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setProducts(productsList.length > 0 ? productsList : previewProducts);
+      } catch (error) {
+        console.error('Erreur lors du chargement des produits:', error);
+        setProducts(previewProducts);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -95,27 +97,27 @@ function Home() {
       setCategories(categoriesList.length > 0 ? categoriesList : previewCategories);
     } else {
       // Mode Firebase
-      // try {
-      //   const categoriesCollection = collection(db, 'categories');
-      //   const categoriesSnapshot = await getDocs(categoriesCollection);
-      //   const categoriesList = categoriesSnapshot.docs.map(doc => ({
-      //     id: doc.id,
-      //     ...doc.data()
-      //   }));
-      //   setCategories(categoriesList.length > 0 ? categoriesList : previewCategories);
-      // } catch (error) {
-      //   console.error('Erreur lors du chargement des catégories:', error);
-      //   setCategories(previewCategories);
-      // }
+      try {
+        const categoriesCollection = collection(db, 'categories');
+        const categoriesSnapshot = await getDocs(categoriesCollection);
+        const categoriesList = categoriesSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setCategories(categoriesList.length > 0 ? categoriesList : previewCategories);
+      } catch (error) {
+        console.error('Erreur lors du chargement des catégories:', error);
+        setCategories(previewCategories);
+      }
     }
   };
 
   useEffect(() => {
-    fetchProducts();
-    fetchCategories();
-    
-    // Écouter les changements dans localStorage pour mettre à jour automatiquement
     if (USE_LOCAL_STORAGE) {
+      fetchProducts();
+      fetchCategories();
+      
+      // Écouter les changements dans localStorage pour mettre à jour automatiquement
       const handleStorageChange = () => {
         fetchProducts();
         fetchCategories();
@@ -133,6 +135,44 @@ function Home() {
       return () => {
         window.removeEventListener('storage', handleStorageChange);
         clearInterval(interval);
+      };
+    } else {
+      // Mode Firebase - Écouter les changements en temps réel
+      const unsubscribeProducts = onSnapshot(
+        collection(db, 'products'),
+        (snapshot) => {
+          const productsList = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }));
+          setProducts(productsList.length > 0 ? productsList : previewProducts);
+          setLoading(false);
+        },
+        (error) => {
+          console.error('Erreur lors du chargement des produits:', error);
+          setProducts(previewProducts);
+          setLoading(false);
+        }
+      );
+
+      const unsubscribeCategories = onSnapshot(
+        collection(db, 'categories'),
+        (snapshot) => {
+          const categoriesList = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }));
+          setCategories(categoriesList.length > 0 ? categoriesList : previewCategories);
+        },
+        (error) => {
+          console.error('Erreur lors du chargement des catégories:', error);
+          setCategories(previewCategories);
+        }
+      );
+
+      return () => {
+        unsubscribeProducts();
+        unsubscribeCategories();
       };
     }
   }, []);
