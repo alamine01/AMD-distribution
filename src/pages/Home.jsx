@@ -421,7 +421,7 @@ function Home() {
             <div className="content-item">
               <div className="content-icon">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#dc2626" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#2563eb" stroke="#2563eb" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
               <div className="content-text">
@@ -433,10 +433,10 @@ function Home() {
             <div className="content-item">
               <div className="content-icon">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M22 21V19C21.9993 17.9352 21.6277 16.8693 20.9265 16.0001C20.2253 15.1309 19.2418 14.5107 18.13 14.25" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55219C18.7122 5.25367 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75634 18.1676 9.45782C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M22 21V19C21.9993 17.9352 21.6277 16.8693 20.9265 16.0001C20.2253 15.1309 19.2418 14.5107 18.13 14.25" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55219C18.7122 5.25367 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75634 18.1676 9.45782C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
               <div className="content-text">

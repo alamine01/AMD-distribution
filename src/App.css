@@ -1,9 +1,9 @@
 :root {
-  --primary-color: #dc2626;
+  --primary-color: #2563eb;
   --primary-red: var(--primary-color);
-  --dark-red: #b91c1c;
-  --light-red: #ef4444;
-  --accent-red: #f87171;
+  --dark-red: #1e40af;
+  --light-red: #3b82f6;
+  --accent-red: #60a5fa;
   --white: #ffffff;
   --light-gray: #f5f7fa;
   --gray: #6b7280;
@@ -16,9 +16,9 @@
   
   /* Legacy blue variables for backward compatibility */
   --primary-blue: var(--primary-color);
-  --dark-blue: #b91c1c;
-  --light-blue: #ef4444;
-  --accent-blue: #f87171;
+  --dark-blue: #1e40af;
+  --light-blue: #3b82f6;
+  --accent-blue: #60a5fa;
 }
 
 * {

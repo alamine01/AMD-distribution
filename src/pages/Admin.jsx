@@ -833,7 +833,7 @@ function OrderCard({ order, onStatusUpdate }) {
       case 'pending': return '#f59e0b';
       case 'processing': return '#3b82f6';
       case 'completed': return '#10b981';
-      case 'cancelled': return '#ef4444';
+      case 'cancelled': return '#3b82f6';
       default: return '#64748b';
     }
   };

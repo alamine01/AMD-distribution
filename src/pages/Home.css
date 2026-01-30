@@ -77,11 +77,11 @@
 }
 
 .nav-link:hover {
-  color: #dc2626;
+  color: #2563eb;
 }
 
 .nav-link.active {
-  background: #dc2626;
+  background: #2563eb;
   color: #ffffff;
   padding: 0.5rem 1.5rem;
 }
@@ -123,7 +123,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   overflow-x: auto;
   scrollbar-width: thin;
-  scrollbar-color: #dc2626 #f3f4f6;
+  scrollbar-color: #2563eb #f3f4f6;
   -ms-overflow-style: -ms-autohiding-scrollbar;
   scroll-behavior: smooth;
 }
@@ -138,12 +138,12 @@
 }
 
 .category-filter-nav::-webkit-scrollbar-thumb {
-  background: #dc2626;
+  background: #2563eb;
   border-radius: 10px;
 }
 
 .category-filter-nav::-webkit-scrollbar-thumb:hover {
-  background: #b91c1c;
+  background: #1e40af;
 }
 
 .category-filter-btn {
@@ -161,22 +161,22 @@
 }
 
 .category-filter-btn:hover {
-  border-color: #dc2626;
-  color: #dc2626;
+  border-color: #2563eb;
+  color: #2563eb;
   transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.15);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
 }
 
 .category-filter-btn.active {
-  background: #dc2626;
+  background: #2563eb;
   color: #ffffff;
-  border-color: #dc2626;
-  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.25);
+  border-color: #2563eb;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
 }
 
 .category-filter-btn.active:hover {
-  background: #b91c1c;
-  border-color: #b91c1c;
+  background: #1e40af;
+  border-color: #1e40af;
 }
 
 .main-content {
@@ -224,7 +224,7 @@
 .discount-amount {
   font-size: 3rem;
   font-weight: 800;
-  color: #dc2626;
+  color: #2563eb;
 }
 
 .discount-text {
@@ -273,7 +273,7 @@
   top: 0;
   bottom: 0;
   width: 8px;
-  background: #dc2626;
+  background: #2563eb;
   z-index: 2;
 }
 
@@ -285,7 +285,7 @@
   transform: translateY(-50%);
   width: 100px;
   height: 100px;
-  background: #dc2626;
+  background: #2563eb;
   border-radius: 50%;
   z-index: 2;
 }
@@ -358,7 +358,7 @@
 
 .product-feature-line {
   height: 8px;
-  background: #dc2626;
+  background: #2563eb;
   border-radius: 4px;
   width: 40%;
   margin-top: 0.5rem;
@@ -381,13 +381,13 @@
 .product-icon {
   width: 32px;
   height: 32px;
-  border: 2px solid #dc2626;
+  border: 2px solid #2563eb;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.625rem;
-  color: #dc2626;
+  color: #2563eb;
   background: #ffffff;
 }
 
@@ -402,7 +402,7 @@
 }
 
 .star.filled {
-  color: #dc2626;
+  color: #2563eb;
 }
 
 .product-price-wireframe {
@@ -423,7 +423,7 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  border: 2px solid #dc2626;
+  border: 2px solid #2563eb;
   background: transparent;
   cursor: pointer;
 }
@@ -455,20 +455,20 @@
 .feature-item:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  border-color: #dc2626;
+  border-color: #2563eb;
 }
 
 .feature-icon {
   width: 60px;
   height: 60px;
-  border: 2px solid #dc2626;
+  border: 2px solid #2563eb;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
   flex-shrink: 0;
-  background: rgba(220, 38, 38, 0.05);
+  background: rgba(37, 99, 235, 0.05);
 }
 
 .feature-text {
@@ -543,22 +543,22 @@
 }
 
 .content-item:hover {
-  border-color: #dc2626;
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.1);
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
 }
 
 .content-icon {
   width: 50px;
   height: 50px;
-  border: 2px solid #dc2626;
+  border: 2px solid #2563eb;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.25rem;
-  color: #dc2626;
+  color: #2563eb;
   flex-shrink: 0;
-  background: rgba(220, 38, 38, 0.05);
+  background: rgba(37, 99, 235, 0.05);
 }
 
 .content-text {
@@ -584,7 +584,7 @@
 }
 
 .content-link {
-  color: #dc2626;
+  color: #2563eb;
   text-decoration: none;
   font-weight: 600;
   font-size: 0.9375rem;
@@ -595,7 +595,7 @@
 
 .content-link:hover {
   transform: translateX(4px);
-  color: #b91c1c;
+  color: #1e40af;
 }
 
 .column-right {
@@ -681,7 +681,7 @@
 .number {
   font-size: 2rem;
   font-weight: 800;
-  color: #dc2626;
+  color: #2563eb;
   flex-shrink: 0;
   line-height: 1;
 }
