@@ -35,27 +35,27 @@ function Home() {
     { id: '3', name: 'Tablette Pro', description: 'Tablette 10 pouces avec processeur puissant', price: 189000, imageUrl: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400&h=400&fit=crop', categoryId: 'cat1', stock: 8 },
     { id: '4', name: 'Montre Connectée', description: 'Montre intelligente avec suivi de santé', price: 65000, imageUrl: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop', categoryId: 'cat1', stock: 30 },
     { id: '5', name: 'Enceinte Portable', description: 'Enceinte Bluetooth avec son stéréo puissant', price: 45000, imageUrl: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=400&fit=crop', categoryId: 'cat1', stock: 12 },
-    
+
     // Mode & Vêtements
     { id: '6', name: 'T-Shirt Premium', description: 'T-shirt en coton bio, coupe moderne', price: 15000, imageUrl: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop', categoryId: 'cat2', stock: 50 },
     { id: '7', name: 'Jean Slim Fit', description: 'Jean délavé, coupe ajustée', price: 25000, imageUrl: 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=400&fit=crop', categoryId: 'cat2', stock: 20 },
     { id: '8', name: 'Veste en Cuir', description: 'Veste en cuir véritable, style classique', price: 125000, imageUrl: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=400&fit=crop', categoryId: 'cat2', stock: 5 },
     { id: '9', name: 'Sneakers Sport', description: 'Chaussures de sport confortables', price: 35000, imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop', categoryId: 'cat2', stock: 18 },
     { id: '10', name: 'Robe Élégante', description: 'Robe cocktail, coupe ajustée', price: 45000, imageUrl: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&h=400&fit=crop', categoryId: 'cat2', stock: 22 },
-    
+
     // Maison & Déco
     { id: '11', name: 'Lampadaire Moderne', description: 'Lampadaire design avec éclairage LED', price: 55000, imageUrl: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400&h=400&fit=crop', categoryId: 'cat3', stock: 10 },
     { id: '12', name: 'Coussin Décoratif', description: 'Coussin en velours, plusieurs coloris', price: 12000, imageUrl: 'https://images.unsplash.com/photo-1584100936595-4556d5b8e5e0?w=400&h=400&fit=crop', categoryId: 'cat3', stock: 35 },
     { id: '13', name: 'Tapis Moderne', description: 'Tapis en laine, design contemporain', price: 75000, imageUrl: 'https://images.unsplash.com/photo-1556912172-45b7abe8b7e4?w=400&h=400&fit=crop', categoryId: 'cat3', stock: 7 },
     { id: '14', name: 'Vase Décoratif', description: 'Vase en céramique, design unique', price: 28000, imageUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop', categoryId: 'cat3', stock: 28 },
     { id: '15', name: 'Miroir Design', description: 'Miroir mural avec cadre doré', price: 45000, imageUrl: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea8?w=400&h=400&fit=crop', categoryId: 'cat3', stock: 14 },
-    
+
     // Beauté & Santé
     { id: '16', name: 'Kit Soin Visage', description: 'Kit complet de soin pour le visage', price: 32000, imageUrl: 'https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?w=400&h=400&fit=crop', categoryId: 'cat4', stock: 40 },
     { id: '17', name: 'Parfum Premium', description: 'Parfum de luxe, senteur boisée', price: 85000, imageUrl: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=400&fit=crop', categoryId: 'cat4', stock: 6 },
     { id: '18', name: 'Rouge à Lèvres', description: 'Rouge à lèvres longue tenue', price: 15000, imageUrl: 'https://images.unsplash.com/photo-1583241805004-265fc0e91459?w=400&h=400&fit=crop', categoryId: 'cat4', stock: 45 },
     { id: '19', name: 'Crème Hydratante', description: 'Crème hydratante jour et nuit', price: 22000, imageUrl: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop', categoryId: 'cat4', stock: 32 },
-    
+
     // Sport & Fitness
     { id: '20', name: 'Haltères Ajustables', description: 'Haltères réglables de 2 à 20 kg', price: 45000, imageUrl: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop', categoryId: 'cat5', stock: 16 },
     { id: '21', name: 'Tapis de Yoga', description: 'Tapis de yoga antidérapant', price: 18000, imageUrl: 'https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=400&h=400&fit=crop', categoryId: 'cat5', stock: 0 },
@@ -117,22 +117,22 @@ function Home() {
     if (USE_LOCAL_STORAGE) {
       fetchProducts();
       fetchCategories();
-      
+
       // Écouter les changements dans localStorage pour mettre à jour automatiquement
       const handleStorageChange = () => {
         fetchProducts();
         fetchCategories();
       };
-      
+
       // Écouter les événements de changement de localStorage
       window.addEventListener('storage', handleStorageChange);
-      
+
       // Vérifier périodiquement les changements (pour les changements dans le même onglet)
       const interval = setInterval(() => {
         fetchProducts();
         fetchCategories();
       }, 2000); // Vérifier toutes les 2 secondes
-      
+
       return () => {
         window.removeEventListener('storage', handleStorageChange);
         clearInterval(interval);
@@ -205,7 +205,7 @@ function Home() {
         document.getElementsByTagName('head')[0].appendChild(link);
       }
       link.href = settings.logoUrl;
-      
+
       // Mettre à jour aussi apple-touch-icon pour iOS
       let appleLink = document.querySelector("link[rel~='apple-touch-icon']");
       if (!appleLink) {
@@ -243,11 +243,11 @@ function Home() {
   const filteredProductsByCategory = selectedCategory === 'all'
     ? productsByCategory
     : Object.keys(productsByCategory).reduce((acc, categoryId) => {
-        if (categoryId === selectedCategory && productsByCategory[categoryId].length > 0) {
-          acc[categoryId] = productsByCategory[categoryId];
-        }
-        return acc;
-      }, {});
+      if (categoryId === selectedCategory && productsByCategory[categoryId].length > 0) {
+        acc[categoryId] = productsByCategory[categoryId];
+      }
+      return acc;
+    }, {});
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('fr-FR', {
@@ -263,11 +263,12 @@ function Home() {
     const quantityMessage = `  Quantité: x1\n`;
     const priceMessage = `  Prix: ${formatPrice(product.price || 0)}\n\n`;
     const totalMessage = `*Total : ${formatPrice(product.price || 0)}*`;
-    
+
     const fullMessage = message + productMessage + quantityMessage + priceMessage + totalMessage;
     const encodedMessage = encodeURIComponent(fullMessage);
-    const whatsappUrl = `https://wa.me/${CONTACT_CONFIG.whatsappNumber}?text=${encodedMessage}`;
-    
+    const whatsappNumber = settings?.orderWhatsAppNumber || CONTACT_CONFIG.whatsappNumber;
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
     // Ouvrir WhatsApp dans un nouvel onglet
     window.open(whatsappUrl, '_blank');
   };
@@ -275,14 +276,16 @@ function Home() {
   const handleLearnMoreClick = (e) => {
     e.preventDefault();
     const message = encodeURIComponent('Bonjour, je souhaite en savoir plus sur la qualité premium de vos produits.');
-    const whatsappUrl = `https://wa.me/${CONTACT_CONFIG.whatsappNumber}?text=${message}`;
+    const whatsappNumber = settings?.orderWhatsAppNumber || CONTACT_CONFIG.whatsappNumber;
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');
   };
 
   const handleContactClick = (e) => {
     e.preventDefault();
     const message = encodeURIComponent('Bonjour, je souhaite vous contacter pour une question ou un besoin spécifique.');
-    const whatsappUrl = `https://wa.me/${CONTACT_CONFIG.whatsappNumber}?text=${message}`;
+    const whatsappNumber = settings?.orderWhatsAppNumber || CONTACT_CONFIG.whatsappNumber;
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');
   };
 
@@ -293,19 +296,19 @@ function Home() {
         <div className="header-content">
           <div className="logo-container">
             {settings?.logoUrl ? (
-              <img 
-                key={settings.logoUrl} 
-                src={settings.logoUrl} 
-                alt="AMD Distribution" 
-                className="logo-image" 
-                style={{ maxHeight: '50px', maxWidth: '150px', objectFit: 'contain' }} 
+              <img
+                key={settings.logoUrl}
+                src={settings.logoUrl}
+                alt="AMD Distribution"
+                className="logo-image"
+                style={{ maxHeight: '50px', maxWidth: '150px', objectFit: 'contain' }}
               />
             ) : (
               <div className="logo-icon">AMD</div>
             )}
           </div>
           <div className="header-actions">
-            <Cart />
+            <Cart orderPhoneNumber={settings?.orderWhatsAppNumber} />
           </div>
         </div>
       </header>
@@ -352,7 +355,7 @@ function Home() {
                   </>
                 )}
               </div>
-              <button 
+              <button
                 className="shop-now-btn"
                 onClick={() => {
                   const categorySection = document.querySelector('.category-filter-container');
@@ -397,9 +400,9 @@ function Home() {
         {Object.keys(filteredProductsByCategory).map(categoryId => {
           const categoryProducts = filteredProductsByCategory[categoryId];
           if (!categoryProducts || categoryProducts.length === 0) return null;
-          
+
           const category = displayCategories.find(cat => cat.id === categoryId) || { name: 'Autres produits' };
-          
+
           return (
             <ProductCarousel
               key={categoryId}
@@ -421,7 +424,7 @@ function Home() {
             <div className="content-item">
               <div className="content-icon">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#2563eb" stroke="#2563eb" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#2563eb" stroke="#2563eb" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
               <div className="content-text">
@@ -433,10 +436,10 @@ function Home() {
             <div className="content-item">
               <div className="content-icon">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M22 21V19C21.9993 17.9352 21.6277 16.8693 20.9265 16.0001C20.2253 15.1309 19.2418 14.5107 18.13 14.25" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55219C18.7122 5.25367 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75634 18.1676 9.45782C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M22 21V19C21.9993 17.9352 21.6277 16.8693 20.9265 16.0001C20.2253 15.1309 19.2418 14.5107 18.13 14.25" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55219C18.7122 5.25367 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75634 18.1676 9.45782C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
               <div className="content-text">

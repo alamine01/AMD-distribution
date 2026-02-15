@@ -43,12 +43,12 @@ function Admin() {
       const currentUser = authStorage.getCurrentUser();
       setUser(currentUser);
       setLoading(false);
-        if (currentUser) {
-          fetchProducts();
-          fetchCategories();
-          fetchOrders();
-          fetchSettings();
-        }
+      if (currentUser) {
+        fetchProducts();
+        fetchCategories();
+        fetchOrders();
+        fetchSettings();
+      }
     } else {
       // Mode Firebase (quand configuré)
       const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -176,7 +176,7 @@ function Admin() {
         stock: parseInt(productData.stock) || 0,
         id: editingProduct?.id
       };
-      
+
       productsStorage.save(productToSave);
       setEditingProduct(null);
       setShowProductForm(false);
@@ -190,7 +190,7 @@ function Admin() {
           price: parseFloat(productData.price),
           stock: parseInt(productData.stock) || 0
         };
-        
+
         if (editingProduct) {
           await updateDoc(doc(db, 'products', editingProduct.id), productToSave);
           setEditingProduct(null);
@@ -216,7 +216,7 @@ function Admin() {
         ...categoryData,
         id: editingCategory?.id
       };
-      
+
       categoriesStorage.save(categoryToSave);
       setEditingCategory(null);
       setShowCategoryForm(false);
@@ -326,7 +326,8 @@ function Admin() {
               facebook: '',
               instagram: '',
               whatsapp: ''
-            }
+            },
+            orderWhatsAppNumber: ''
           };
           await setDoc(doc(db, 'settings', 'site'), defaultSettings);
           setSettings(defaultSettings);
@@ -545,6 +546,7 @@ function Admin() {
                   <p><strong>Facebook:</strong> {settings.socialLinks?.facebook || 'Non configuré'}</p>
                   <p><strong>Instagram:</strong> {settings.socialLinks?.instagram || 'Non configuré'}</p>
                   <p><strong>WhatsApp:</strong> {settings.socialLinks?.whatsapp || 'Non configuré'}</p>
+                  <p><strong>Numéro Commandes:</strong> {settings.orderWhatsAppNumber || 'Par défaut (Config)'}</p>
                 </div>
               </div>
             )}
@@ -552,6 +554,180 @@ function Admin() {
         )}
 
       </main>
+    </div>
+  );
+}
+
+function SettingsForm({ settings, onClose, onSubmit }) {
+  const [formData, setFormData] = useState({
+    logoUrl: settings?.logoUrl || '',
+    heroImageUrl: settings?.heroImageUrl || '',
+    heroTitle: settings?.heroTitle || '',
+    heroDiscount: settings?.heroDiscount || '',
+    whyChooseImageUrl: settings?.whyChooseImageUrl || '',
+    howItWorksImageUrl: settings?.howItWorksImageUrl || '',
+    socialLinks: {
+      facebook: settings?.socialLinks?.facebook || '',
+      instagram: settings?.socialLinks?.instagram || '',
+      whatsapp: settings?.socialLinks?.whatsapp || ''
+    },
+    orderWhatsAppNumber: settings?.orderWhatsAppNumber || ''
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name.startsWith('social_')) {
+      const socialKey = name.replace('social_', '');
+      setFormData(prev => ({
+        ...prev,
+        socialLinks: {
+          ...prev.socialLinks,
+          [socialKey]: value
+        }
+      }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header">
+          <h2>Configurer les paramètres</h2>
+          <button className="close-button" onClick={onClose}>×</button>
+        </div>
+        <form onSubmit={handleSubmit} className="settings-form">
+          <div className="form-group">
+            <label>Numéro WhatsApp pour les commandes</label>
+            <input
+              type="text"
+              name="orderWhatsAppNumber"
+              value={formData.orderWhatsAppNumber}
+              onChange={handleChange}
+              placeholder="Ex: 221771234567 (Format international sans +)"
+            />
+            <p className="form-hint">Si vide, le numéro par défaut du fichier de configuration sera utilisé.</p>
+          </div>
+
+          <div className="form-section-title">Apparence</div>
+
+          <div className="form-group">
+            <label>URL du Logo</label>
+            <input
+              type="text"
+              name="logoUrl"
+              value={formData.logoUrl}
+              onChange={handleChange}
+              placeholder="https://..."
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Titre de la bannière (Hero)</label>
+            <textarea
+              name="heroTitle"
+              value={formData.heroTitle}
+              onChange={handleChange}
+              rows="2"
+              placeholder="Titre principal"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Texte de réduction (Hero)</label>
+            <input
+              type="text"
+              name="heroDiscount"
+              value={formData.heroDiscount}
+              onChange={handleChange}
+              placeholder="Ex: 50% DE RÉDUCTION"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Image de bannière (Hero)</label>
+            <input
+              type="text"
+              name="heroImageUrl"
+              value={formData.heroImageUrl}
+              onChange={handleChange}
+              placeholder="https://..."
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Image "Pourquoi nous choisir"</label>
+            <input
+              type="text"
+              name="whyChooseImageUrl"
+              value={formData.whyChooseImageUrl}
+              onChange={handleChange}
+              placeholder="https://..."
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Image "Comment ça marche"</label>
+            <input
+              type="text"
+              name="howItWorksImageUrl"
+              value={formData.howItWorksImageUrl}
+              onChange={handleChange}
+              placeholder="https://..."
+            />
+          </div>
+
+          <div className="form-section-title">Réseaux Sociaux</div>
+
+          <div className="form-group">
+            <label>Facebook URL</label>
+            <input
+              type="text"
+              name="social_facebook"
+              value={formData.socialLinks.facebook}
+              onChange={handleChange}
+              placeholder="https://facebook.com/..."
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Instagram URL</label>
+            <input
+              type="text"
+              name="social_instagram"
+              value={formData.socialLinks.instagram}
+              onChange={handleChange}
+              placeholder="https://instagram.com/..."
+            />
+          </div>
+
+          <div className="form-group">
+            <label>WhatsApp URL (Contact)</label>
+            <input
+              type="text"
+              name="social_whatsapp"
+              value={formData.socialLinks.whatsapp}
+              onChange={handleChange}
+              placeholder="https://wa.me/..."
+            />
+          </div>
+
+          <div className="form-actions">
+            <button type="button" onClick={onClose} className="cancel-button">
+              Annuler
+            </button>
+            <button type="submit" className="submit-button">
+              Enregistrer
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
@@ -1026,14 +1202,14 @@ function SettingsForm({ settings, onClose, onSubmit }) {
       const fileExtension = file.name.split('.').pop();
       const fileName = `${timestamp}_${randomString}.${fileExtension}`;
       const storageRef = ref(storage, `settings/${fileName}`);
-      
+
       await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(storageRef);
 
       const fieldName = imageType === 'logo' ? 'logoUrl' :
-                       imageType === 'hero' ? 'heroImageUrl' :
-                       imageType === 'whyChoose' ? 'whyChooseImageUrl' :
-                       'howItWorksImageUrl';
+        imageType === 'hero' ? 'heroImageUrl' :
+          imageType === 'whyChoose' ? 'whyChooseImageUrl' :
+            'howItWorksImageUrl';
 
       setFormData(prev => ({ ...prev, [fieldName]: downloadURL }));
       setImagePreviews(prev => ({ ...prev, [imageType]: downloadURL }));
@@ -1160,10 +1336,10 @@ function SettingsForm({ settings, onClose, onSubmit }) {
               }}
               placeholder="ALL BEAUTIFUL&#10;COLLECTION"
               rows={3}
-              style={{ 
-                width: '100%', 
-                padding: '0.5rem', 
-                border: '1px solid #ddd', 
+              style={{
+                width: '100%',
+                padding: '0.5rem',
+                border: '1px solid #ddd',
                 borderRadius: '4px',
                 fontFamily: 'inherit',
                 fontSize: '1rem'
