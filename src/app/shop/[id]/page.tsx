@@ -1,6 +1,7 @@
 import { Product } from '@/types';
 import styles from './ProductDetail.module.css';
 import Link from 'next/link';
+import { Truck, ShieldCheck } from 'lucide-react';
 
 // Mock Data (Reusing for now)
 const products: Product[] = [
@@ -36,14 +37,18 @@ export default async function ProductPage({ params }: { params: { id: string } }
 
                     <div className={styles.features}>
                         <div className={styles.feature}>
-                            <span>🚚</span>
+                            <div className={styles.iconWrapper}>
+                                <Truck size={24} />
+                            </div>
                             <div>
                                 <strong>Livraison Locale</strong>
                                 <p>Remise en main propre à Lyon</p>
                             </div>
                         </div>
                         <div className={styles.feature}>
-                            <span>🛡️</span>
+                            <div className={styles.iconWrapper}>
+                                <ShieldCheck size={24} />
+                            </div>
                             <div>
                                 <strong>Artisanat Authentique</strong>
                                 <p>Produits sourcés directement</p>
