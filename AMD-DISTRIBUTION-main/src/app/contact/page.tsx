@@ -80,8 +80,8 @@ export default function ContactPage() {
                                     <Phone size={20} />
                                 </div>
                                 <div>
-                                    <p className={styles.infoLabel}>Téléphone</p>
-                                    <p>+33 7 53 13 65 28</p>
+                                    <p className={styles.infoLabel}>Téléphone / WhatsApp</p>
+                                    <p>+221 76 303 32 51</p>
                                 </div>
                             </div>
                             <div className={styles.infoItem}>
