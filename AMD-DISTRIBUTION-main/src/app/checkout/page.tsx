@@ -1,28 +1,18 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
-import { createCheckoutSession } from "@/actions/checkout";
 import styles from "./Checkout.module.css";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { motion } from "framer-motion";
+import { MessageCircle } from "lucide-react";
+import { createWhatsAppOrderLink, getWhatsAppNumberFormatted } from "@/lib/whatsapp";
 
 export default function CheckoutPage() {
     const { cart, totalPrice, totalItems } = useCart();
-    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    const handleCheckout = async () => {
-        if (cart.length === 0) return;
-        setLoading(true);
-        try {
-           await createCheckoutSession(cart);
-        } catch (error) {
-            alert("Une erreur est survenue lors de l'initialisation du paiement.");
-        } finally {
-            setLoading(false);
-        }
-    };
+    const whatsappLink = createWhatsAppOrderLink(cart, totalPrice);
+    const formattedPhone = getWhatsAppNumberFormatted();
 
     if (cart.length === 0) {
         return (
@@ -84,17 +74,31 @@ export default function CheckoutPage() {
                         <span>{totalPrice.toFixed(2)} €</span>
                     </div>
 
-                    <button
+                    <a
+                        href={whatsappLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="btn btn-primary"
-                        style={{ width: '100%', marginTop: '2rem' }}
-                        onClick={handleCheckout}
-                        disabled={loading}
+                        style={{
+                            width: '100%',
+                            marginTop: '1.5rem',
+                            backgroundColor: '#25D366',
+                            borderColor: '#25D366',
+                            color: '#ffffff',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '0.5rem',
+                            fontWeight: 600,
+                            padding: '0.9rem',
+                            textDecoration: 'none'
+                        }}
                     >
-                        {loading ? "Chargement..." : "Procéder au paiement sécurisé"}
-                    </button>
+                        <MessageCircle size={20} /> Commander via WhatsApp
+                    </a>
 
-                    <p className={styles.secureInfo}>
-                        🔒 Paiement sécurisé
+                    <p className={styles.secureInfo} style={{ marginTop: '1rem', fontSize: '0.85rem' }}>
+                        📲 Numéro WhatsApp : <strong>{formattedPhone}</strong>
                     </p>
                 </motion.aside>
             </div>
