@@ -17,10 +17,30 @@ export function getWhatsAppNumberFormatted(): string {
     return `+${raw}`;
 }
 
-export function createWhatsAppOrderLink(cart: CartItem[] = [], totalPrice: number = 0): string {
+export interface CustomerInfo {
+    name?: string;
+    phone?: string;
+    address?: string;
+    note?: string;
+}
+
+export function createWhatsAppOrderLink(
+    cart: CartItem[] = [],
+    totalPrice: number = 0,
+    customerInfo?: CustomerInfo
+): string {
     const cleanNumber = DEFAULT_WHATSAPP_NUMBER.replace(/[^0-9]/g, "");
     
     let message = "Bonjour Maya Boutique ! 👋\nJe souhaite passer la commande suivante :\n\n";
+
+    if (customerInfo && (customerInfo.name || customerInfo.phone || customerInfo.address || customerInfo.note)) {
+        message += "--- *COORDONNÉES CLIENT* ---\n";
+        if (customerInfo.name) message += `👤 Nom : ${customerInfo.name}\n`;
+        if (customerInfo.phone) message += `📞 Téléphone : ${customerInfo.phone}\n`;
+        if (customerInfo.address) message += `📍 Adresse : ${customerInfo.address}\n`;
+        if (customerInfo.note) message += `📝 Note : ${customerInfo.note}\n`;
+        message += "\n--- *ARTICLES COMMANDÉS* ---\n\n";
+    }
     
     (cart || []).forEach((item, index) => {
         const price = item.price || 0;
