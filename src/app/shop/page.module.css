@@ -1,0 +1,278 @@
+.shopPage {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+}
+
+.header {
+    margin-bottom: 5rem;
+    text-align: center;
+}
+
+.title {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    font-weight: 800;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 4rem;
+    align-items: flex-start;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    position: sticky;
+    top: 120px;
+}
+
+.filterTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--foreground);
+}
+
+.filterList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filterList button {
+    background: none;
+    border: none;
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    transition: var(--transition-smooth);
+    text-align: left;
+    border-radius: var(--border-radius-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.filterList button:hover {
+    background: rgba(0, 0, 0, 0.03);
+    color: var(--foreground);
+}
+
+@media (prefers-color-scheme: dark) {
+    .filterList button:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+.activeFilter {
+    background: rgba(139, 0, 0, 0.05) !important;
+    color: var(--primary-red) !important;
+    font-weight: 700 !important;
+}
+
+.priceRange {
+    padding: 0 0.5rem;
+}
+
+.priceRange input {
+    width: 100%;
+    accent-color: var(--primary-red);
+    height: 6px;
+    border-radius: 3px;
+    background: var(--border-color);
+    margin-top: 1rem;
+}
+
+.priceLabels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 1rem;
+    font-weight: 500;
+}
+
+.resultsBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.resultsCount {
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.sort {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 9999px;
+    background: var(--background);
+    color: var(--foreground);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.sort:hover {
+    border-color: var(--primary-red);
+}
+
+.productGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2rem;
+}
+
+.mobileFilterToggle {
+    display: none;
+}
+
+.mobileOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 1001;
+}
+
+.mobileSidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 320px;
+    height: 100vh;
+    background: var(--background);
+    z-index: 1002;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.mobileSidebarHeader {
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.mobileSidebarHeader h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.closeBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--foreground);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobileSidebarContent {
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+@media (max-width: 1024px) {
+    .layout {
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .shopPage {
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+    }
+
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .mobileFilterToggle {
+        display: block;
+    }
+
+    .filterBtn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.2rem;
+        border-radius: 9999px;
+        border: 1px solid var(--border-color);
+        background: var(--background);
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: var(--transition-smooth);
+    }
+
+    .filterBtn:hover {
+        border-color: var(--primary-red);
+        color: var(--primary-red);
+    }
+
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .resultsBar {
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 1rem 0;
+    }
+
+    .resultsCount {
+        order: 3;
+        width: 100%;
+        margin-top: 0.5rem;
+        font-size: 0.85rem;
+    }
+
+    .sort {
+        width: auto;
+        flex-grow: 1;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .productGrid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 1rem;
+    }
+}
