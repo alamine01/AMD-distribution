@@ -17,17 +17,20 @@ export function getWhatsAppNumberFormatted(): string {
     return `+${raw}`;
 }
 
-export function createWhatsAppOrderLink(cart: CartItem[], totalPrice: number): string {
+export function createWhatsAppOrderLink(cart: CartItem[] = [], totalPrice: number = 0): string {
     const cleanNumber = DEFAULT_WHATSAPP_NUMBER.replace(/[^0-9]/g, "");
     
     let message = "Bonjour Maya Boutique ! 👋\nJe souhaite passer la commande suivante :\n\n";
     
-    cart.forEach((item, index) => {
-        const itemTotal = (item.price * item.quantity).toFixed(2);
-        message += `${index + 1}. *${item.name}*\n   Quantité : ${item.quantity}\n   Prix : ${itemTotal} €\n\n`;
+    (cart || []).forEach((item, index) => {
+        const price = item.price || 0;
+        const qty = item.quantity || 1;
+        const itemTotal = (price * qty).toFixed(2);
+        message += `${index + 1}. *${item.name || "Produit"}*\n   Quantité : ${qty}\n   Prix : ${itemTotal} €\n\n`;
     });
     
-    message += `-------------------------\n*Total de la commande : ${totalPrice.toFixed(2)} €*\n-------------------------\n\nMerci de me confirmer la disponibilité et les détails pour le règlement.`;
+    const safeTotal = (totalPrice || 0).toFixed(2);
+    message += `-------------------------\n*Total de la commande : ${safeTotal} €*\n-------------------------\n\nMerci de me confirmer la disponibilité et les détails pour le règlement.`;
     
     return `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
 }

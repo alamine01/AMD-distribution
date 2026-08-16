@@ -8,13 +8,16 @@ import { MessageCircle } from "lucide-react";
 import { createWhatsAppOrderLink, getWhatsAppNumberFormatted } from "@/lib/whatsapp";
 
 export default function CheckoutPage() {
-    const { cart, totalPrice, totalItems } = useCart();
+    const { cart = [], totalPrice = 0, totalItems = 0 } = useCart();
     const router = useRouter();
 
-    const whatsappLink = createWhatsAppOrderLink(cart, totalPrice);
+    const safeTotalPrice = totalPrice || 0;
+    const safeTotalItems = totalItems || 0;
+
+    const whatsappLink = createWhatsAppOrderLink(cart, safeTotalPrice);
     const formattedPhone = getWhatsAppNumberFormatted();
 
-    if (cart.length === 0) {
+    if (!cart || cart.length === 0) {
         return (
             <motion.div
                 className={`container ${styles.empty}`}
@@ -42,16 +45,24 @@ export default function CheckoutPage() {
 
             <div className={styles.layout}>
                 <div className={styles.itemsSection}>
-                    {cart.map((item) => (
-                        <div key={item.id} className={styles.item}>
-                            <img src={item.image} alt={item.name} className={styles.itemImage} />
-                            <div className={styles.itemInfo}>
-                                <h3>{item.name}</h3>
-                                <p>{item.quantity} x {item.price.toFixed(2)} €</p>
+                    {cart.map((item) => {
+                        const itemPrice = item.price || 0;
+                        const itemQuantity = item.quantity || 1;
+                        const itemTotal = itemPrice * itemQuantity;
+
+                        return (
+                            <div key={item.id} className={styles.item}>
+                                {item.image && (
+                                    <img src={item.image} alt={item.name} className={styles.itemImage} />
+                                )}
+                                <div className={styles.itemInfo}>
+                                    <h3>{item.name}</h3>
+                                    <p>{itemQuantity} x {itemPrice.toFixed(2)} €</p>
+                                </div>
+                                <p className={styles.itemTotal}>{itemTotal.toFixed(2)} €</p>
                             </div>
-                            <p className={styles.itemTotal}>{(item.price * item.quantity).toFixed(2)} €</p>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 <motion.aside
@@ -62,8 +73,8 @@ export default function CheckoutPage() {
                 >
                     <h2>Résumé</h2>
                     <div className={styles.summaryRow}>
-                        <span>Produits ({totalItems})</span>
-                        <span>{totalPrice.toFixed(2)} €</span>
+                        <span>Produits ({safeTotalItems})</span>
+                        <span>{safeTotalPrice.toFixed(2)} €</span>
                     </div>
                     <div className={styles.summaryRow}>
                         <span>Livraison</span>
@@ -71,7 +82,7 @@ export default function CheckoutPage() {
                     </div>
                     <div className={`${styles.summaryRow} ${styles.grandTotal}`}>
                         <span>Total à payer</span>
-                        <span>{totalPrice.toFixed(2)} €</span>
+                        <span>{safeTotalPrice.toFixed(2)} €</span>
                     </div>
 
                     <a
