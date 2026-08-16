@@ -1,26 +1,4 @@
 {
-<<<<<<< HEAD
-  "name": "boubacar-website",
-  "private": true,
-  "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.20.0",
-    "firebase": "^10.7.1"
-  },
-  "devDependencies": {
-    "@types/react": "^18.2.43",
-    "@types/react-dom": "^18.2.17",
-    "@vitejs/plugin-react": "^4.2.1",
-    "vite": "^5.0.8"
-=======
   "name": "maya-boutique",
   "version": "0.1.0",
   "private": true,
@@ -31,15 +9,13 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@stripe/stripe-js": "^8.7.0",
     "cloudinary": "^2.9.0",
     "firebase": "^12.9.0",
     "framer-motion": "^12.34.0",
     "lucide-react": "^0.564.0",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "stripe": "^20.3.1"
+    "react-dom": "19.2.3"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -48,6 +24,5 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "typescript": "^5"
->>>>>>> origin/main
   }
 }
