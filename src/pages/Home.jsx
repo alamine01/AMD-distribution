@@ -8,8 +8,8 @@ import Cart from '../components/Cart';
 import { CONTACT_CONFIG } from '../config/contact';
 import './Home.css';
 
-// Mode développement : utiliser localStorage au lieu de Firebase
-const USE_LOCAL_STORAGE = false;
+// Mode développement / Démo : utiliser localStorage si Firebase n'est pas configuré
+const USE_LOCAL_STORAGE = !import.meta.env.VITE_FIREBASE_API_KEY;
 
 function Home() {
   const [products, setProducts] = useState([]);

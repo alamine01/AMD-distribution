@@ -18,8 +18,8 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import './Admin.css';
 
-// Basculer sur Firebase (auth + Firestore)
-const USE_LOCAL_STORAGE = false;
+// Mode développement / Démo : utiliser localStorage si Firebase n'est pas configuré
+const USE_LOCAL_STORAGE = !import.meta.env.VITE_FIREBASE_API_KEY;
 
 function Admin() {
   const [user, setUser] = useState(null);

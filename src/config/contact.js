@@ -13,8 +13,7 @@
  */
 export const CONTACT_CONFIG = {
   // Numéro WhatsApp (format international sans le +)
-  // ⚠️ MODIFIEZ CE NUMÉRO AVEC VOTRE NUMÉRO RÉEL
-  whatsappNumber: "33775771306", // +33 7 75 77 13 06
+  whatsappNumber: "221788653729", // +221 78 865 37 29
   
   // Nom de l'entreprise (utilisé dans le message WhatsApp)
   businessName: "AMD Distribution"
