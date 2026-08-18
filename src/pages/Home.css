@@ -2,12 +2,13 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #ffffff;
+  background: var(--bg-dark);
+  color: var(--dark-gray);
 }
 
 .header {
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border-gray);
   padding: 1.5rem 0;
   position: sticky;
   top: 0;
@@ -44,7 +45,7 @@
 .logo-icon {
   width: 60px;
   height: 60px;
-  background: #1f2937;
+  background: #3b82f6;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -53,7 +54,7 @@
   font-size: 0.875rem;
   font-weight: 700;
   text-transform: uppercase;
-  border: 2px solid #f3f4f6;
+  border: 2px solid #1e293b;
   padding: 0.5rem;
 }
 
@@ -66,7 +67,7 @@
 }
 
 .nav-link {
-  color: #1f2937;
+  color: #cbd5e1;
   text-decoration: none;
   font-weight: 500;
   font-size: 0.9375rem;
@@ -77,11 +78,11 @@
 }
 
 .nav-link:hover {
-  color: #2563eb;
+  color: #60a5fa;
 }
 
 .nav-link.active {
-  background: #2563eb;
+  background: #3b82f6;
   color: #ffffff;
   padding: 0.5rem 1.5rem;
 }
@@ -94,7 +95,7 @@
   transform: translateX(-50%);
   width: 60%;
   height: 3px;
-  background: #9ca3af;
+  background: #60a5fa;
   border-radius: 2px;
 }
 
@@ -120,7 +121,7 @@
   padding: 1.5rem;
   background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   overflow-x: auto;
   scrollbar-width: thin;
   scrollbar-color: #2563eb #f3f4f6;
@@ -209,7 +210,7 @@
 .hero-title {
   font-size: 3.5rem;
   font-weight: 800;
-  color: #1f2937;
+  color: #ffffff;
   line-height: 1.1;
   margin: 0;
   letter-spacing: -1px;
@@ -224,33 +225,34 @@
 .discount-amount {
   font-size: 3rem;
   font-weight: 800;
-  color: #2563eb;
+  color: #60a5fa;
 }
 
 .discount-text {
   font-size: 2rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #f1f5f9;
 }
 
 .shop-now-btn {
-  background: #ffffff;
-  border: 2px solid #1f2937;
+  background: #3b82f6;
+  border: 2px solid #3b82f6;
   padding: 1rem 2.5rem;
   border-radius: 50px;
   font-weight: 600;
   font-size: 1rem;
-  color: #1f2937;
+  color: #ffffff;
   cursor: pointer;
   transition: all 0.3s ease;
   align-self: flex-start;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.35);
 }
 
 .shop-now-btn:hover {
-  background: #1f2937;
-  color: #ffffff;
+  background: #2563eb;
+  border-color: #2563eb;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
 }
 
 .hero-image {
@@ -454,7 +456,7 @@
 
 .feature-item:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   border-color: #2563eb;
 }
 
@@ -503,14 +505,14 @@
 .content-title {
   font-size: 2.5rem;
   font-weight: 800;
-  color: #1f2937;
+  color: #ffffff;
   margin: 0 0 1rem 0;
   letter-spacing: -0.5px;
 }
 
 .content-subtitle {
   font-size: 1.125rem;
-  color: #6b7280;
+  color: #94a3b8;
   margin: 0;
   max-width: 600px;
   margin: 0 auto;
@@ -544,7 +546,7 @@
 
 .content-item:hover {
   border-color: #2563eb;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
 }
 
 .content-icon {
@@ -584,7 +586,7 @@
 }
 
 .content-link {
-  color: #2563eb;
+  color: #60a5fa;
   text-decoration: none;
   font-weight: 600;
   font-size: 0.9375rem;
@@ -595,7 +597,7 @@
 
 .content-link:hover {
   transform: translateX(4px);
-  color: #1e40af;
+  color: #93c5fd;
 }
 
 .column-right {
@@ -610,13 +612,13 @@
   border-radius: 16px;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
   transition: all 0.3s ease;
 }
 
 .content-image:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
 .content-image.large {
@@ -648,14 +650,14 @@
 .numbered-title {
   font-size: 2.5rem;
   font-weight: 800;
-  color: #1f2937;
+  color: #ffffff;
   margin: 0 0 1rem 0;
   letter-spacing: -0.5px;
 }
 
 .numbered-subtitle {
   font-size: 1.125rem;
-  color: #6b7280;
+  color: #94a3b8;
   margin: 0;
 }
 
@@ -681,7 +683,7 @@
 .number {
   font-size: 2rem;
   font-weight: 800;
-  color: #2563eb;
+  color: #3b82f6;
   flex-shrink: 0;
   line-height: 1;
 }
@@ -696,14 +698,14 @@
 .numbered-item-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #f8fafc;
   margin: 0;
   letter-spacing: -0.3px;
 }
 
 .numbered-item-description {
   font-size: 1rem;
-  color: #6b7280;
+  color: #94a3b8;
   margin: 0;
   line-height: 1.6;
 }

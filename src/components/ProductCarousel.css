@@ -13,7 +13,7 @@
 .carousel-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #ffffff;
   margin: 0;
   letter-spacing: -0.5px;
 }
@@ -27,7 +27,7 @@
   width: 40px;
   height: 4px;
   border: none;
-  background: #e5e7eb;
+  background: #1e293b;
   border-radius: 2px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -35,11 +35,11 @@
 }
 
 .carousel-indicator:hover {
-  background: #2563eb;
+  background: #3b82f6;
 }
 
 .carousel-indicator.active {
-  background: #2563eb;
+  background: #3b82f6;
   width: 60px;
 }
 
@@ -81,9 +81,9 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: #ffffff;
-  border: 2px solid #2563eb;
-  color: #2563eb;
+  background: #131b2e;
+  border: 2px solid #3b82f6;
+  color: #60a5fa;
   font-size: 2rem;
   font-weight: 700;
   cursor: pointer;
@@ -92,14 +92,14 @@
   justify-content: center;
   z-index: 10;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
 }
 
 .carousel-button:hover {
-  background: #2563eb;
+  background: #3b82f6;
   color: #ffffff;
   transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
 }
 
 .carousel-button-left {
