@@ -16,7 +16,21 @@ function Home() {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
-  const [settings, setSettings] = useState(null);
+  const [settings, setSettings] = useState(() => {
+    try {
+      const cached = localStorage.getItem('amd_site_settings');
+      return cached ? JSON.parse(cached) : null;
+    } catch (e) {
+      return null;
+    }
+  });
+  const [settingsLoaded, setSettingsLoaded] = useState(() => {
+    try {
+      return !!localStorage.getItem('amd_site_settings');
+    } catch (e) {
+      return false;
+    }
+  });
 
   // Catégories de prévisualisation
   const previewCategories = [
@@ -179,10 +193,15 @@ function Home() {
             const settingsData = settingsDoc.data();
             console.log('Paramètres mis à jour:', settingsData);
             setSettings(settingsData);
+            try {
+              localStorage.setItem('amd_site_settings', JSON.stringify(settingsData));
+            } catch (e) {}
           }
+          setSettingsLoaded(true);
         },
         (error) => {
           console.error('Erreur lors du chargement des paramètres:', error);
+          setSettingsLoaded(true);
         }
       );
 

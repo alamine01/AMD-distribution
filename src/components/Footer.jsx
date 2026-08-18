@@ -4,7 +4,14 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import './Footer.css';
 
 function Footer() {
-  const [settings, setSettings] = useState(null);
+  const [settings, setSettings] = useState(() => {
+    try {
+      const cached = localStorage.getItem('amd_site_settings');
+      return cached ? JSON.parse(cached) : null;
+    } catch (e) {
+      return null;
+    }
+  });
 
   useEffect(() => {
     // Charger les paramètres en temps réel
@@ -12,7 +19,11 @@ function Footer() {
       doc(db, 'settings', 'site'),
       (settingsDoc) => {
         if (settingsDoc.exists()) {
-          setSettings(settingsDoc.data());
+          const settingsData = settingsDoc.data();
+          setSettings(settingsData);
+          try {
+            localStorage.setItem('amd_site_settings', JSON.stringify(settingsData));
+          } catch (e) {}
         }
       },
       (error) => {

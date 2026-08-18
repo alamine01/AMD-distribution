@@ -348,6 +348,9 @@ function Admin() {
           updatedAt: new Date()
         }, { merge: true });
         setSettings(settingsData);
+        try {
+          localStorage.setItem('amd_site_settings', JSON.stringify(settingsData));
+        } catch (e) {}
         setShowSettingsForm(false);
         alert('Paramètres mis à jour avec succès!');
       } catch (error) {
