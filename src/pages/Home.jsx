@@ -336,6 +336,10 @@ function Home() {
         <section className="hero-section">
           <div className="hero-content">
             <div className="hero-text">
+              <div className="hero-badge">
+                <span className="badge-dot"></span>
+                <span>Grossiste & Détail Certifié</span>
+              </div>
               <h1 className="hero-title">
                 {settings?.heroTitle ? (
                   settings.heroTitle.split('\n').map((line, index, array) => (
@@ -346,15 +350,14 @@ function Home() {
                   ))
                 ) : (
                   <>
-                    ALL BEAUTIFUL<br />
-                    COLLECTION
+                    COLLECTION<br />
+                    PREMIUM AMD
                   </>
                 )}
               </h1>
               <div className="hero-discount">
                 {settings?.heroDiscount ? (
                   (() => {
-                    // Séparer le pourcentage du reste du texte
                     const match = settings.heroDiscount.match(/(\d+%)\s*(.*)/);
                     if (match) {
                       return (
@@ -364,27 +367,32 @@ function Home() {
                         </>
                       );
                     }
-                    // Si pas de format attendu, afficher tel quel
                     return <span className="discount-text">{settings.heroDiscount}</span>;
                   })()
                 ) : (
                   <>
-                    <span className="discount-amount">50%</span>
-                    <span className="discount-text">DE RÉDUCTION</span>
+                    <span className="discount-amount">Offres</span>
+                    <span className="discount-text">EXCLUSIVES D'ARRIVAGE</span>
                   </>
                 )}
               </div>
-              <button
-                className="shop-now-btn"
-                onClick={() => {
-                  const categorySection = document.querySelector('.category-filter-container');
-                  if (categorySection) {
-                    categorySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  }
-                }}
-              >
-                Acheter maintenant
-              </button>
+              <div className="hero-cta-group">
+                <button
+                  className="shop-now-btn"
+                  onClick={() => {
+                    const categorySection = document.querySelector('.category-filter-container');
+                    if (categorySection) {
+                      categorySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }}
+                >
+                  Découvrir le catalogue
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </div>
             </div>
             <div className="hero-image">
               <div className="hero-cover-image">

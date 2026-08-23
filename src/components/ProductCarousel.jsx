@@ -12,8 +12,8 @@ function ProductCarousel({ title, products, onOrderClick, categoryId }) {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    const cardWidth = 320; // Largeur approximative d'une carte + gap
-    const scrollAmount = cardWidth * 3; // Scroll de 3 cartes à la fois
+    const cardWidth = 320;
+    const scrollAmount = cardWidth * 2.5;
     
     const newScrollLeft = direction === 'left'
       ? container.scrollLeft - scrollAmount
@@ -35,9 +35,8 @@ function ProductCarousel({ title, products, onOrderClick, categoryId }) {
         container.scrollLeft < container.scrollWidth - container.offsetWidth - 10
       );
       
-      // Mettre à jour l'index actuel basé sur la position de scroll
       const cardWidth = 320;
-      const newIndex = Math.round(container.scrollLeft / (cardWidth * 3));
+      const newIndex = Math.round(container.scrollLeft / (cardWidth * 2.5));
       setCurrentIndex(newIndex);
     };
 
@@ -55,13 +54,19 @@ function ProductCarousel({ title, products, onOrderClick, categoryId }) {
     return null;
   }
 
+  const totalPages = Math.max(1, Math.ceil(products.length / 3));
+
   return (
-    <section className="product-carousel-section">
+    <section className="product-carousel-section" id={categoryId ? `category-${categoryId}` : undefined}>
       {title && (
         <div className="carousel-header">
-          <h2 className="carousel-title">{title}</h2>
+          <div className="carousel-title-group">
+            <span className="carousel-badge-line"></span>
+            <h2 className="carousel-title">{title}</h2>
+            <span className="carousel-count">{products.length} produit{products.length > 1 ? 's' : ''}</span>
+          </div>
           <div className="carousel-indicators">
-            {Array.from({ length: Math.ceil(products.length / 3) }).map((_, index) => (
+            {Array.from({ length: totalPages }).map((_, index) => (
               <button
                 key={index}
                 className={`carousel-indicator ${index === currentIndex ? 'active' : ''}`}
@@ -69,7 +74,7 @@ function ProductCarousel({ title, products, onOrderClick, categoryId }) {
                   const container = scrollContainerRef.current;
                   if (container) {
                     const cardWidth = 320;
-                    const scrollAmount = cardWidth * 3;
+                    const scrollAmount = cardWidth * 2.5;
                     container.scrollTo({
                       left: index * scrollAmount,
                       behavior: 'smooth'
@@ -91,7 +96,9 @@ function ProductCarousel({ title, products, onOrderClick, categoryId }) {
             onClick={() => scroll('left')}
             aria-label="Précédent"
           >
-            ‹
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
           </button>
         )}
 
@@ -113,7 +120,9 @@ function ProductCarousel({ title, products, onOrderClick, categoryId }) {
             onClick={() => scroll('right')}
             aria-label="Suivant"
           >
-            ›
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
           </button>
         )}
       </div>
