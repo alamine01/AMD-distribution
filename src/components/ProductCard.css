@@ -8,6 +8,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  cursor: pointer;
 }
 
 .product-card:hover {
@@ -39,6 +40,32 @@
 
 .product-card:hover .product-image img {
   transform: scale(1.05);
+}
+
+.zoom-hint {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(6px);
+  color: #ffffff;
+  padding: 0.3rem 0.65rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.product-card:hover .zoom-hint {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .product-placeholder {
@@ -190,4 +217,194 @@
 
 .order-button:active {
   transform: translateY(0);
+}
+
+/* Lightbox Modal Grand Format */
+.product-lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(7, 9, 14, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999999;
+  padding: 1.5rem;
+  animation: fadeIn 0.25s ease;
+}
+
+.product-lightbox-modal {
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(59, 130, 246, 0.25);
+  animation: scaleUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  color: #ffffff;
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.lightbox-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.25s ease;
+}
+
+.lightbox-close-btn:hover {
+  background: #ef4444;
+  border-color: #ef4444;
+  transform: rotate(90deg);
+}
+
+.lightbox-image-container {
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  min-height: 380px;
+  max-height: 520px;
+  overflow: hidden;
+}
+
+.lightbox-image-container img {
+  width: 100%;
+  height: 100%;
+  max-height: 460px;
+  object-fit: contain;
+  object-position: center;
+  transition: transform 0.3s ease;
+}
+
+.lightbox-details {
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+  background: #0f172a;
+}
+
+.lightbox-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.lightbox-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.lightbox-price {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #3b82f6;
+  letter-spacing: -0.5px;
+}
+
+.lightbox-description {
+  color: #94a3b8;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.lightbox-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  margin-top: auto;
+}
+
+.lightbox-add-cart-btn {
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.lightbox-add-cart-btn:hover {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.lightbox-order-btn {
+  padding: 1rem 1.5rem;
+  background: var(--whatsapp-gradient);
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  box-shadow: var(--glow-whatsapp);
+  transition: all 0.3s ease;
+}
+
+.lightbox-order-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5);
+}
+
+@media (max-width: 768px) {
+  .product-lightbox-modal {
+    grid-template-columns: 1fr;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  .lightbox-image-container {
+    height: 280px;
+    padding: 1.25rem;
+  }
+
+  .lightbox-details {
+    padding: 1.5rem;
+  }
+
+  .lightbox-title {
+    font-size: 1.375rem;
+  }
+
+  .lightbox-price {
+    font-size: 1.5rem;
+  }
 }
